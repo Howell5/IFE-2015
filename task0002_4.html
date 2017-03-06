@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>task0002_4</title>
+    <style type="text/css">
+    * {
+        padding: 0px;
+        margin: 0px;
+    }
+    
+    body {
+        margin: 50px 50px;
+    }
+    
+    ul,
+    li {
+        list-style: none;
+    }
+    
+    #container {}
+    
+    .text-input {
+        height: 29px;
+        line-height: 29px;
+        font-size: 22px;
+        width: 250px;
+        outline: none;
+    }
+    
+    .advice-ul {
+        border: 1px solid #ddd;
+        border-top-style: none;
+        width: 250px;
+    }
+    
+    .text-input:hover {}
+    
+    .advice-ul li {
+        line-height: 22px;
+        font-size: 22px;
+        cursor: default;
+    }
+    
+    .advice-ul .active {
+        background-color: #ddd;
+    }
+    /*.advice-ul li:hover {
+			background-color: #ddd;
+			cursor: default;
+		}*/
+    
+    .advice-ul li span {
+        color: red;
+    }
+    </style>
+</head>
+
+<body>
+    <h1>输入提示框</h1>
+    <h3>要求如下：</h3>
+    <ul>
+        <li>允许使用鼠标点击选中提示栏中的某个选项</li>
+        <li>允许使用键盘上下键来选中提示栏中的某个选项，回车确认选中</li>
+        <li>选中后，提示内容变更到输入框中</li>
+    </ul>
+    <div id="container">
+        <input class="text-input" type="text" name="search">
+        <ul class="advice-ul">
+        </ul>
+    </div>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/task0002_4.js"></script>
+</body>
+
+</html>

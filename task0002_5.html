@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task0002_5</title>
+	<style type="text/css">
+		* {
+			padding: 0px;
+			margin: 0px;
+			box-sizing: border-box;
+		}
+		#main {
+			background-color: #ddd;
+			position: relative;
+		}
+		.contaniner {
+			border: 1px solid black;
+			width: 200px;
+			height: 600px;
+			float: left;
+			margin: 50px 50px;
+			position: relative;
+		}
+		.box {
+			border-bottom: 1px solid black;
+			width: 200px;
+			height: 40px;
+			background-color: red;
+			cursor: move;
+			position: absolute;
+			z-index: 98;
+		}
+		.active {
+			z-index: 99;
+			opacity: 0.5;
+		}
+		.clearfix:after {
+		    content: "\200B";
+		    display: block;
+		    height: 0;
+		    clear: both;
+		}
+		.clearfix {
+		    *zoom: 1;
+		}
+	</style>
+</head>
+<body>
+	<div id="main" class="clearfix">
+		<div class="contaniner c-left">
+			<div class="box"></div>
+			<div class="box"></div>
+			<div class="box"></div>
+			<div class="box"></div>
+		</div>
+		<div class="contaniner c-right">
+			<div class="box"></div>
+			<div class="box"></div>
+			<div class="box"></div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript">
+	/* 方块init函数，让每个方块到达正确的位置及触发代理事件*/
+	function init() {
+		initBoxPosition($(".c-left"));
+		initBoxPosition($(".c-right"));
+
+		
+	}
+
+	/*让方块到达正确的位置*/
+	function initBoxPosition(block) {
+		var boxs = block.getElementsByClassName('box');
+		for (let i = 0, len = boxs.length; i < len; i++) {
+			boxs[i].style.top = 40 * i + 'px';
+		}
+	}
+	init();
+</script>
+
+<script type="text/javascript" src="js/task0002_5.js"></script>
+</body>
+</html>
