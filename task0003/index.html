@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Todo</title>
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+	<div id="wrap">
+		<div id="head">
+			<div class="head-name">GTD Tools</div>
+		</div>
+		<div id="container">
+			<div id="content-left-1" class="content-left">
+				<div class="task-list">
+					<div class="all-items">所有任务(<span class="items-num">1</span>)</div>
+					<div class="tasks">分类列表</div>
+					<div class="items-list">
+						<div class="item-list">
+							<div class="list-name">
+								<i class="icon-folder-open"></i><span>百度前端学院(<span>1</span>)</span>
+								<i class="delete-task"></i>
+							</div>
+							<ul>
+								<li><p><i class="icon-file"></i>任务1</p></li>
+								<li><p><i class="icon-file"></i>任务2</p></li>
+								<li><p><i class="icon-file"></i>任务3</p></li>
+							</ul>
+						</div>
+						<div class="item-list">
+							<div class="list-name">
+								<i class="icon-folder-open"></i><span>百度前端学院(<span>1</span>)</span>
+							</div>
+							<ul>
+								<li><p><i class="icon-file"></i>任务1</p></li>
+								<li><p><i class="icon-file"></i>任务2</p></li>
+								<li><p><i class="icon-file"></i>任务3</p></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="item-bottom">
+					<div class="add-item">
+						<i class="icon-plus icon-large"></i>
+						<span>新增分类</span>
+					</div>
+				</div>
+			</div>
+			<div id="content-left-2" class="content-left">
+				<div class="task-menu">
+					<div class="sel-button">所有</div>
+					<div class="sel-button">已完成</div>
+					<div class="sel-button">未完成</div>
+				</div>
+				<div class="task-message">
+					<div class="task-date">2017-3-15</div>
+					<ul>
+						<li>sad-1</li>
+						<li>sad-2</li>
+					</ul>
+					<div class="task-date">2017-3-15</div>
+					<ul>
+						<li>sad-1</li>
+						<li>sad-2</li>
+					</ul>
+				</div>
+				<div class="item-bottom">
+					<div class="add-item">
+						<i class="icon-plus icon-large"></i>
+						<span>新增任务</span>
+					</div>
+				</div>
+			</div>
+			<div id="content-right">
+				<div class="task-title">
+					<div class="todo-name">
+						<input type="text" name="todo-name">
+					</div>
+					<span style="display: none">to-do title</span>
+					<div style="display: none">
+						<i class="icon-check icon-large"></i>
+						<i class="icon-edit icon-large"></i>	
+					</div>
+					
+				</div>
+				<div class="select-date">
+					任务日期：
+					<span><input type="date" name=""></span>
+				</div>
+				<div class="task-content">
+					<div class="content">
+						<textarea class="textarea-content">this is textarea</textarea>	
+					</div>
+					<div class="bottom-area">
+						<div class="bottom-button">
+							<button>保存</button>
+							<button>放弃</button>	
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="display: none" class="cover">
+		<div class="modal-head">新增分类</div>
+		<div class="modal-body">
+			
+		</div>
+		<div class="modal-foot"></div>
+	</div>
+	<script type="text/javascript" src="js/util.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
