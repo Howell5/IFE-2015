@@ -326,7 +326,7 @@ function clickHandle(ev) {
 
 function delegateEvent(element, tag, eventName, listener) {
     return addEvent(element, eventName, function(ev) {
-        if (ev.target.tagName.toLocaleLowerCase() == tag) {
+        if (ev.target.tagName.toLocaleLowerCase() === tag) {
             listener(ev.target);
         }
     })
@@ -334,16 +334,12 @@ function delegateEvent(element, tag, eventName, listener) {
 $.delegate = delegateEvent;
 // $.delegate($("#list"), "li", "click", clickHandle);
 
-/*估计有同学已经开始吐槽了，函数里面一堆$看着晕啊，那么接下来把我们的事件函数做如下封装改变：*/
-
-
 
 $.delegate = function(selector, tag, event, listener) {
-        // your implement
-        return delegateEvent($(selector), tag, event, listener);
-    }
+    // your implement
+    return delegateEvent($(selector), tag, event, listener);
+}
     // $.delegate("#list", "li", "click", clickHandle);
-
 
 /*BOM*/
 

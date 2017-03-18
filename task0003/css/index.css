@@ -68,13 +68,42 @@ body {
 
 .content-left .task-list .all-items {}
 
-.content-left .task-list i{
+.content-left .task-list .icon-folder-open, .icon-file{
 	margin-left: 20px;
 	margin-right: 8px;
 }
 
-.content-left .task-list .items-list .list-name .icon-remove {
-	margin-left: 80px;
+.content-left .task-list li {
+	position: relative;
+	height: 30px;
+
+	display: flex;
+	align-items: center;
+}
+
+.content-left .task-list li:hover {
+	box-shadow: 1px 1px 1px;
+	border-radius: 5px 5px;
+	z-index: 102;
+}
+
+.content-left .task-list .items-list li:hover .icon-remove {
+	display: inline-block;
+	
+}
+
+.content-left .task-list .choose {
+	background-color: #fff;
+	box-shadow: 1px 1px 1px;
+	border-radius: 5px 5px;
+	z-index: 101;
+}
+
+.content-left .task-list .items-list .icon-remove {
+	position: absolute;
+	right: 10px;
+	font-size: 1.3em;
+	display: none;
 }
 
 /*.content-left .task-list .item-list .ul-task {
@@ -87,7 +116,7 @@ body {
 
 }
 
-.content-left .task-list .item-list p {
+.content-left .task-list .item-list .icon-file {
 	padding-left: 20px;
 }
 
@@ -224,10 +253,10 @@ body {
 }
 
 #content-right .task-content .content {
-
+	
 }
 
-#content-right .task-content .textarea-content {
+#content-right .task-content .textarea-content,.content {
 	position: absolute;
 	left: 10px;
 	top: 150px;

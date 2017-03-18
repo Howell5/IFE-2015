@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Todo</title>
+	<meta charset="utf-8">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
@@ -14,30 +15,32 @@
 		<div id="container">
 			<div id="content-left-1" class="content-left">
 				<div class="task-list">
-					<div class="all-items">所有任务(<span class="items-num">1</span>)</div>
+					<div class="all-type">
+						<!-- <li class="all-items choose"><span>所有任务(4)</span></li> -->
+					</div>
 					<div class="tasks">分类列表</div>
 					<div class="items-list">
-						<div class="item-list">
-							<div class="list-name">
-								<i class="icon-folder-open"></i><span>百度前端学院(<span>1</span>)</span>
-								<i class="delete-task"></i>
-							</div>
+						<!-- <div class="item-list">
+							<li class="list-name">
+								<i class="icon-folder-open"></i>
+								<span>默认分类(1)</span>
+								<i class="icon-remove"></i>
+							</li>
 							<ul>
-								<li><p><i class="icon-file"></i>任务1</p></li>
-								<li><p><i class="icon-file"></i>任务2</p></li>
-								<li><p><i class="icon-file"></i>任务3</p></li>
+								<li><i class="icon-file"></i>默认子分类<span>(1)</span><i class="icon-remove"></i></li>
 							</ul>
 						</div>
 						<div class="item-list">
-							<div class="list-name">
-								<i class="icon-folder-open"></i><span>百度前端学院(<span>1</span>)</span>
-							</div>
+							<li class="list-name">
+								<i class="icon-folder-open"></i>
+								<span>百度前端学院(3)</span>
+								<i class="icon-remove"></i>
+							</li>
 							<ul>
-								<li><p><i class="icon-file"></i>任务1</p></li>
-								<li><p><i class="icon-file"></i>任务2</p></li>
-								<li><p><i class="icon-file"></i>任务3</p></li>
+								<li><i class="icon-file"></i>任务一<span>(2)</span><i class="icon-remove"></i></li>
+								<li><i class="icon-file"></i>任务二<span>(1)</span><i class="icon-remove"></i></li>
 							</ul>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="item-bottom">
@@ -54,7 +57,7 @@
 					<div class="sel-button">未完成</div>
 				</div>
 				<div class="task-message">
-					<div class="task-date">2017-3-15</div>
+					<!-- <div class="task-date">2017-3-15</div>
 					<ul>
 						<li>sad-1</li>
 						<li>sad-2</li>
@@ -63,7 +66,7 @@
 					<ul>
 						<li>sad-1</li>
 						<li>sad-2</li>
-					</ul>
+					</ul> -->
 				</div>
 				<div class="item-bottom">
 					<div class="add-item">
@@ -74,11 +77,11 @@
 			</div>
 			<div id="content-right">
 				<div class="task-title">
-					<div class="todo-name">
+					<!-- <div class="todo-name">
 						<input type="text" name="todo-name">
-					</div>
-					<span style="display: none">to-do title</span>
-					<div style="display: none">
+					</div> -->
+					<span>to-do title</span>
+					<div>
 						<i class="icon-check icon-large"></i>
 						<i class="icon-edit icon-large"></i>
 					</div>
@@ -86,11 +89,13 @@
 				</div>
 				<div class="select-date">
 					任务日期：
-					<span><input type="date" name=""></span>
+					<span>2017-3-15</span>
+					<!-- <span><input type="date" name=""></span> -->
 				</div>
 				<div class="task-content">
 					<div class="content">
-						<textarea class="textarea-content">this is textarea</textarea>
+						完成 IFE-2015 task0003
+						<!-- <textarea class="textarea-content">this is textarea</textarea> -->
 					</div>
 					<div class="bottom-area">
 						<div class="bottom-button">
