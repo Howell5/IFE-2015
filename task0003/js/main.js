@@ -14,20 +14,35 @@
 			return JSON.parse(JSON.stringify(key));
 		};
 		var getObjByKey = function(obj, key, val) {
+			var objArr = [];
 			for (var i = 0; i < obj.length; i++) {
-				if (obj[i][key] === value) {
-					return obj[i];
+				if (obj[i][key] === val) {
+					objArr.push(obj[i]);	
 				}
 			}
+			return objArr;
 		}
 		return {
 			Jsonps: Jsonps,
+			getObjByKey: getObjByKey,
 			StorageGetter: StorageGetter,
 			StorageSetter: StorageSetter
 		}
 	})();
 
 	var DOM = {
+		btn_save: $('.bottom-area .btn-save'),
+		btn_quit: $('.bottom-area .btn-quit'),
+		icon_check: $('.check-edit .icon-check'),
+		icon_edit: $('.check-edit .icon-edit'),
+		bottom_button: $('.bottom-area .bottom-button'),
+		check_edit: $('.task-title .check-edit'),
+		todo_name: $('.task-title .todo-name'),
+		todo_date: $('.select-date .todo-date'),
+		todo_content: $('.task-content .content'),
+		task_menu: $('.task-menu'),
+		selBtn_lists: $('.task-menu').getElementsByTagName('li'),
+		task_message: $('.task-message'),
 		all_type: $('.all-type'),
 		task_list: $('.task-list'),
 		items_list: $('.items-list'),
@@ -61,7 +76,7 @@
 			"id": 1,
 			"name": "任务一",
 			"childArr": [1,2],
-			"fatherId": 1	
+			"fatherId": 1
 		},
 		{
 			"id": 2,
@@ -82,7 +97,7 @@
 		{
 			"id": 1,
 			"name": "sad-1",
-			"date": "2017-3-16",
+			"date": "2017-3-17",
 			"content": "熟悉html,css",
 			"fatherId": 1,
 			"finish": true
@@ -117,7 +132,39 @@
 	}
 
 	function renderBase () {
-		// 生成任务分类列表
+		var taskIdArr;
+		// 获得 taskIdArr 方法
+		var getTaskIdArr = function (choose,flag) {
+			var taskIdArr = [];
+			var itemName = choose.getElementsByTagName('span')[0].innerHTML;
+			switch (flag) {
+				case 1:    //选中所有任务
+					for (var i = 0; i < jsonTask.length; i++) {
+						taskIdArr.push(jsonTask[i].id);
+					}
+					return taskIdArr;
+					break;
+				case 2:    //选中主分类
+					var cateObj = Util.getObjByKey(josnCate, 'name', itemName)[0];
+					for (var i = 0; i < cateObj.childArr.length; i++) {
+						var childObj = Util.getObjByKey(jsonCateChild, 'id', cateObj.childArr[i])[0];
+						for (var j = 0; j < childObj.childArr.length; j++) {
+							taskIdArr.push(childObj.childArr[j]);
+						}
+					}
+					return taskIdArr;
+					break;
+				case 3:    //选中子分类
+					var childObj = Util.getObjByKey(jsonCateChild, 'name', itemName)[0];
+					for (var i = 0; i < childObj.childArr.length; i++) {
+						taskIdArr.push(childObj.childArr[i]);
+					}
+					return taskIdArr;
+					break;
+			};
+		}
+
+		// 渲染任务分类列表
 		var makeType = function () {
 			DOM.all_type.innerHTML = '<li class="all-items choose"><span>所有任务('+ jsonTask.length +')</span></li>'
 			for (var i = 0; i < josnCate.length; i++) {
@@ -131,7 +178,7 @@
 						+	'<ul>';
 				for (var j = 0; j < josnCate[i].childArr.length; j++) {
 					var cateChildId = josnCate[i].childArr[j];
-					html += '<li class="child-name"><i class="icon-file"></i><span>'+jsonCateChild[cateChildId].name+'</span><span>('+ jsonCateChild[j].childArr.length+')</span><i class="icon-remove"></i></li>'
+					html += '<li class="child-name"><i class="icon-file"></i><span>'+jsonCateChild[cateChildId].name+'</span><span>('+ jsonCateChild[cateChildId].childArr.length +')</span><i class="icon-remove"></i></li>'
 				}
 				html += '</ul></div>';
 			}
@@ -141,29 +188,162 @@
 
 		//生成任务二层信息列表
 		var makeTask = function (choose,flag) {
-			var date = [];
+			taskIdArr = getTaskIdArr(choose,flag);
+			makeTaskById(taskIdArr);
+			statusHandle(1);
+			/*var taskIdArr = [];
 			var itemName = choose.getElementsByTagName('span')[0].innerHTML;
 			switch (flag) {
 				case 1:    //选中所有任务
 					for (var i = 0; i < jsonTask.length; i++) {
-						date.push(jsonTask[i][id]);
+						taskIdArr.push(jsonTask[i].id);
 					}
-					makeTaskById();
+					makeTaskById(taskIdArr);
 					break;
 				case 2:    //选中主分类
-					var cateObj = Util.getObjByKey(cate, 'name', itemName);
-					for (var i = 0; i < cateObj.length; i++) {
-						cateObj[i]
+					var cateObj = Util.getObjByKey(josnCate, 'name', itemName);
+					for (var i = 0; i < cateObj.childArr.length; i++) {
+						var childObj = Util.getObjByKey(jsonCateChild, 'id', cateObj.childArr[i]);
+						for (var j = 0; j < childObj.childArr.length; j++) {
+							taskIdArr.push(childObj.childArr[j]);
+						}
 					}
+					makeTaskById(taskIdArr);
+					break;
 				case 3:    //选中子分类
-			};
-			console.log('its all on me ',flag,itemName);
+					var childObj = Util.getObjByKey(jsonCateChild, 'name', itemName);
+					for (var i = 0; i < childObj.childArr.length; i++) {
+						taskIdArr.push(childObj.childArr[i]);
+					}
+					makeTaskById(taskIdArr);
+			};*/
+			
+			
 		}
+
+		//渲染筛选菜单
+		var statusHandle = function (flag) {
+			var finishIdArr = [];
+			var unfinishIdArr = [];
+			var taskArr = [];
+			for (var i = 0; i < taskIdArr.length; i++) {
+				var taskChoose = Util.getObjByKey(jsonTask, 'id', taskIdArr[i])[0];
+				taskArr.push(taskChoose);
+			}
+			for (var i = 0; i < taskArr.length; i++) {
+				if (taskArr[i].finish) {
+					finishIdArr.push(taskArr[i].id);
+				} else {
+					unfinishIdArr.push(taskArr[i].id);
+				}
+			}
+			switch(flag) {
+				case 1:
+					makeTaskById(taskIdArr);
+					break;
+				case 2:
+					makeTaskById(finishIdArr);
+					break;
+				case 3:
+					makeTaskById(unfinishIdArr);
+					break;
+			}
+			
+		}
+
+		// 渲染二层任务信息列表
 		var makeTaskById = function (taskIdArr) {
+			var date = [];
+			var taskDate;
+			for (var i = 0; i < taskIdArr.length; i++) {
+				taskDate = Util.getObjByKey(jsonTask, 'id', taskIdArr[i])[0].date;
+				date.push(taskDate);
+			}
+			date = uniqArray(date);  //去重
+			date = sortDate(date);	 //排序
 
+			var mesHtml = '';
+			for (var i = 0; i < date.length; i++) {
+				mesHtml += '<div class="task-date">'+ date[i] +'</div><ul>';
+				var taskObjSameDate = Util.getObjByKey(jsonTask, 'date', date[i]); //获取拥有相同日期的task
+
+				for (var j = 0; j < taskObjSameDate.length; j++) {
+					isFinished(taskObjSameDate[j]);
+				}
+			}
+
+			//生成li标签函数
+			// var renderLi = function (date)
+
+			function isFinished (obj) {
+				if (obj.finish) {
+					mesHtml += '<li><i class="icon-ok"></i>'+obj.name+'<i class="icon-remove"></i></li>';
+				} else {
+					mesHtml += '<li>'+obj.name+'<i class="icon-remove"></i></li>';
+				}
+			}
+			mesHtml += '</ul>';
+				
+			DOM.task_message.innerHTML = mesHtml;
+			function sortDate (arr) {
+				return arr.sort(function (a, b) {
+					return a.replace(/-/g, '') - b.replace(/-/g, '');
+				});
+			};
+			
+		}
+		var demit;
+		//渲染任务详细信息
+		var makeTaskDetail = function (taskli) {
+			var taskName = taskli.innerText;
+			var taskObj = Util.getObjByKey(jsonTask, 'name', taskName)[0];
+			DOM.todo_name.innerText = taskObj.name;
+			DOM.todo_date.innerText = taskObj.date;
+			DOM.todo_content.innerText = taskObj.content;
+			return function() {
+				demit = taskli;
+			};
+			
+
+			
 		}
 
+		//页面内容编辑模式
+		var taskEdit = function () {
+			hide(DOM.check_edit);
+			show(DOM.bottom_button);
+			var content = DOM.todo_content.innerText;
+			var contentHTML = '<textarea name="text-content" class="textarea-content">'+ content +'</textarea>';
+			DOM.todo_content.innerHTML = contentHTML;
+			DOM.todo_date.innerHTML = '<input placeholder="例:2017-2-15" type="date" name="todo-date" >';
+			DOM.todo_name.innerHTML = '<input type="text" name="todo-name" value='+DOM.todo_name.innerText+'>';	
+		}
+
+		//保存页面编辑内容
+		var taskSave = function () {
+
+			DOM.todo_name.innerText = DOM.todo_name.firstElementChild.value;
+			DOM.todo_date.innerText = DOM.todo_date.firstElementChild.value;
+			debugger;
+			//todo 在非chrome浏览器的日期格式问题 及用户未填写值
+			
+			DOM.todo_content.innerText = DOM.todo_content.firstElementChild.value;
+			hide(DOM.bottom_button);
+			show(DOM.check_edit);
+		}
+
+		//还原修改前的数据
+		
+		var taskQuit = function () {
+			makeTaskDetail(demit)();
+		}
+		
 		return {
+			taskQuit: taskQuit,
+			taskSave: taskSave,
+			taskEdit: taskEdit,
+			makeTaskDetail: makeTaskDetail,
+			statusHandle: statusHandle,
 			makeType: makeType,
 			makeTask: makeTask
 		}
@@ -182,23 +362,74 @@
 			});
 		}
 		listHover();*/
-
-		//分类列表点击效果
+		var firstSelBtn = DOM.task_menu.firstElementChild;
+		//分类列表点击
 		var cateClick = function (callback) {
 			var all_items = DOM.all_type.firstElementChild;
 			delegateEvent(DOM.task_list, 'li', 'click', function(name) {
 				for (var i = 0; i < DOM.name_lists.length; i++) {
 					removeClass(DOM.name_lists[i], 'choose');
 				}
+				for (var i = 0; i < DOM.selBtn_lists.length; i++) {
+					removeClass(DOM.selBtn_lists[i], 'choose');
+				}
 				removeClass(all_items, 'choose');
 				addClass(name, 'choose');
+				addClass(firstSelBtn, 'choose');
 				callback && callback(name);
 				
 			});
 		}
+
+		//筛选菜单点击
+		var selClick = function (callback) {
+			delegateEvent(DOM.task_menu, 'li', 'click', function(selBtn) {
+				for (var i = 0; i < DOM.selBtn_lists.length; i++) {
+					removeClass(DOM.selBtn_lists[i], 'choose');
+				}
+				addClass(selBtn, 'choose');
+				callback && callback(selBtn);
+			});
+		}
+
+		//二层任务名点击
+		var taskNameClick = function (callback) {
+			delegateEvent(DOM.task_message, 'li', 'click', function(taskName) {
+				callback && callback(taskName);
+			});
+		}
+
+		//点击编辑按钮
+		var editClick = function (callback) {
+			addClickEvent(DOM.icon_edit, function () {
+				callback && callback();
+			});
+		}
+		//点击保存按钮
+		var contentSaveClick = function (callback) {
+			addClickEvent(DOM.btn_save, function () {
+				callback && callback();
+			});
+		}
+		//点击取消按钮
+		var contentQuitClick = function (callback) {
+			addClickEvent(DOM.btn_quit, function () {
+				callback && callback();
+				hide(DOM.bottom_button);
+				show(DOM.check_edit);
+			});
+		}
+
 		return {
+			contentQuitClick: contentQuitClick,
+			contentSaveClick: contentSaveClick,
+			editClick: editClick,
+			taskNameClick: taskNameClick,
+			selClick: selClick,
 			cateClick: cateClick
 		}
+
+
 
 	}
 
@@ -222,8 +453,34 @@
 				flag = 3;
 				renderModel.makeTask(name,flag);
 			}
-		})
-		
+		});
+		eventHandle.selClick(function(selBtn) {
+			if (selBtn.innerHTML.indexOf('所有') !==-1) {
+				//选中所有任务
+				flag = 1;
+				renderModel.statusHandle(flag);
+			} else if (selBtn.innerHTML.indexOf('已完成') !==-1) {
+				//选中完成
+				flag = 2;
+				renderModel.statusHandle(flag);
+			} else if (selBtn.innerHTML.indexOf('未完成') !==-1 ) {
+				//选中未完成
+				flag = 3;
+				renderModel.statusHandle(flag);
+			}
+		});
+		eventHandle.taskNameClick(function(taskName) {
+			renderModel.makeTaskDetail(taskName)();
+		});
+		eventHandle.editClick(function() {
+			renderModel.taskEdit();
+		});
+		eventHandle.contentSaveClick(function() {
+			renderModel.taskSave();
+		});
+		eventHandle.contentQuitClick(function() {
+			renderModel.taskQuit();
+		});
 	}
 
 	main();

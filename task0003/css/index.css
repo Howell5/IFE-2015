@@ -89,7 +89,6 @@ body {
 
 .content-left .task-list .items-list li:hover .icon-remove {
 	display: inline-block;
-	
 }
 
 .content-left .task-list .choose {
@@ -171,12 +170,22 @@ body {
 	cursor: pointer;
 }
 
-#content-left-2 .task-menu .sel-button:nth-child(1) {
+/*#content-left-2 .task-menu .sel-button:nth-child(1) {
 	background-color: #fff;
-}
+	box-shadow: 1px 1px 1px;
+	border-radius: 5px 5px;
+}*/
 
 #content-left-2 .task-menu .sel-button:hover {
 	background-color: #fff;
+	box-shadow: 1px 1px 1px;
+	border-radius: 5px 5px;
+}
+
+#content-left-2 .task-menu .choose {
+	background-color: #fff;
+	box-shadow: 1px 1px 1px;
+	border-radius: 5px 5px;
 }
 
 #content-left-2 .task-message .task-date {
@@ -187,6 +196,18 @@ body {
 	background-color: #FFFFF0;
 
 	padding-left: 20px;
+}
+
+#content-left-2 .task-message .icon-ok {
+	position: absolute;
+	left: 10px;
+}
+
+#content-left-2 .task-message .icon-remove {
+	position: absolute;
+	right: 10px;
+	font-size: 1.3em;
+	display: none;
 }
 
 #content-left-2 .task-message li{
@@ -200,6 +221,10 @@ body {
 
 #content-left-2 .task-message li:hover {
 	background-color: #f2f2f2;
+}
+
+#content-left-2 .task-message li:hover .icon-remove {
+	display: inline-block;
 }
 
 /*content-right*/
@@ -235,6 +260,14 @@ body {
 	right: 70px;
 }
 
+#content-right .task-title .icon-check {
+	cursor: pointer;
+}
+
+#content-right .task-title .icon-edit:hover {
+	cursor: pointer;
+}
+
 #content-right .task-title input {
 	padding: 7px 10px;
 	width: 224px;
@@ -253,10 +286,6 @@ body {
 }
 
 #content-right .task-content .content {
-	
-}
-
-#content-right .task-content .textarea-content,.content {
 	position: absolute;
 	left: 10px;
 	top: 150px;
@@ -264,7 +293,14 @@ body {
 	bottom: 60px;
 	outline: none;
 	border: 0px;
+}
+
+#content-right .task-content .textarea-content {
+	width: 100%;
+	height: 100%;
+	padding: 10px;
 	font-size: 1.1em;
+	box-sizing: border-box;
 }
 
 #content-right .task-content .bottom-area {

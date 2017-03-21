@@ -52,14 +52,14 @@
 			</div>
 			<div id="content-left-2" class="content-left">
 				<div class="task-menu">
-					<div class="sel-button">所有</div>
-					<div class="sel-button">已完成</div>
-					<div class="sel-button">未完成</div>
+					<li class="sel-button choose">所有</li>
+					<li class="sel-button">已完成</li>
+					<li class="sel-button">未完成</li>
 				</div>
 				<div class="task-message">
 					<!-- <div class="task-date">2017-3-15</div>
 					<ul>
-						<li>sad-1</li>
+						<li><i class="icon-ok"></i>sad-1<i class="icon-remove"></i></li>
 						<li>sad-2</li>
 					</ul>
 					<div class="task-date">2017-3-15</div>
@@ -80,8 +80,8 @@
 					<!-- <div class="todo-name">
 						<input type="text" name="todo-name">
 					</div> -->
-					<span>to-do title</span>
-					<div>
+					<span class="todo-name">to-do title</span>
+					<div class="check-edit">
 						<i class="icon-check icon-large"></i>
 						<i class="icon-edit icon-large"></i>
 					</div>
@@ -89,18 +89,17 @@
 				</div>
 				<div class="select-date">
 					任务日期：
-					<span>2017-3-15</span>
-					<!-- <span><input type="date" name=""></span> -->
+					<span class="todo-date">2017-3-15</span>
+					<!-- <span><input placeholder="例:2017-2-15" type="date" name=""></span> -->
 				</div>
 				<div class="task-content">
 					<div class="content">
-						完成 IFE-2015 task0003
 						<!-- <textarea class="textarea-content">this is textarea</textarea> -->
 					</div>
 					<div class="bottom-area">
-						<div class="bottom-button">
-							<button>保存</button>
-							<button>放弃</button>
+						<div style="display: none" class="bottom-button">
+							<button class="btn-save">保存</button>
+							<button class="btn-quit">放弃</button>
 						</div>
 
 					</div>

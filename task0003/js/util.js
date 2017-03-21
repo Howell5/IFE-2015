@@ -74,6 +74,17 @@ function uniqArray(arr) {
     return narr;
 }
 
+/* 4-1.特殊数组排序
+ * spa 为特殊字符，若无为''
+ */ 
+/*function sortDate(arr, spa) {
+    spa = (spa === undefined) ? '': spa;
+    var regx = '/' + spa +'/g';
+    return arr.sort(function(a, b) {
+        return a.replace(regx, '') - b.replace(regx, '');
+    });
+}*/
+
 var a = [1, 3, 5, 7, 5, 3];
 var b = uniqArray(a);
 output(b);
@@ -134,6 +145,16 @@ var obj = {
 };
 output(getObjectLength(obj));
 
+// 实现element的hide
+function hide (ele) {
+    ele.style.display = 'none';
+}
+
+//实现element的show
+function show (ele) {
+    ele.style.display = '';
+}
+
 
 /*8.用正则表达式做简单的判断*/
 
@@ -185,9 +206,9 @@ function addClass(element, newClassName) {
     if (!hasClass(element, newClassName)) {
         var aclass = element.getAttribute("class");
         element.setAttribute("class", aclass + " " + newClassName);
-    } else {
-        element.setAttribute("class", newClassName);
-    }
+    }// } else {
+    //     element.setAttribute("class", newClassName);
+    // }
 }
 
 // 移除element中的样式oldClassName	
