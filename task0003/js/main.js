@@ -321,8 +321,9 @@
 
 		//保存页面编辑内容
 		var taskSave = function () {
-
-			DOM.todo_name.innerText = DOM.todo_name.firstElementChild.value;
+			var dateInputValue = DOM.todo_date.firstElementChild.value;
+			DOM.todo_name.innerText = dateInputValue;
+			if (dateInputValue != '' && isDate) {}
 			DOM.todo_date.innerText = DOM.todo_date.firstElementChild.value;
 			debugger;
 			//todo 在非chrome浏览器的日期格式问题 及用户未填写值
@@ -336,6 +337,15 @@
 		
 		var taskQuit = function () {
 			makeTaskDetail(demit)();
+		}
+
+		//检查用户填写数据的合法性
+		var checkData = function () {
+			try {
+
+			} catch (error) {
+				alert(error.message);
+			}
 		}
 		
 		return {

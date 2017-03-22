@@ -187,8 +187,13 @@ function isMobilePhone(phone) {
     }
 }
 
+//判断是否填写正确的日期，例 2017-3-17
+function isDate (date) {
+    var dateRegex = ;
+}
 
 isMobilePhone('15279181729');
+
 
 /* 8.DOM操作 */
 
