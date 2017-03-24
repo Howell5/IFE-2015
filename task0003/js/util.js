@@ -188,8 +188,18 @@ function isMobilePhone(phone) {
 }
 
 //判断是否填写正确的日期，例 2017-3-17
-function isDate (date) {
-    var dateRegex = ;
+function isDate (d) {
+    var reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/;
+    var result = d.match(reg);
+    
+    if(result == null){return false};
+
+    var dt = new Date(result[1],result[3]-1,result[4]);
+    if(Number(dt.getFullYear())!=Number(result[1])){return false;}    
+    if(Number(dt.getMonth())+1!=Number(result[3])){return false;}    
+    if(Number(dt.getDate())!=Number(result[4])){return false;}
+
+    return true;
 }
 
 isMobilePhone('15279181729');
