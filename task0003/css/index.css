@@ -99,8 +99,8 @@ body {
 }
 
 .content-left .task-list .items-list .icon-remove {
-	position: absolute;
-	right: 10px;
+	margin-left: auto;
+	margin-right: 10px;
 	font-size: 1.3em;
 	display: none;
 }
@@ -341,7 +341,7 @@ body {
 	left: 0px;
 	right: 0px;
 
-	z-index: 99;
+	z-index: 120;
 
 	color: #000;
 }
@@ -371,4 +371,42 @@ body {
 	border-bottom: 1px dashed #ccc;
 
 
+}
+
+.cover .modal .modal-body {
+	padding-left: 60px;
+	padding-top: 15px;
+}
+
+.cover .modal .modal-body input {
+	width: 150px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+.cover .modal .modal-body-name {
+	margin: 10px 0px;
+}
+
+.cover .modal .modal-foot {
+	display: flex;
+	justify-content: center;
+}
+
+.cover .modal .modal-foot button:nth-child(1) {
+	background-color: #ccc;
+	margin-right: 15px;
+	width: 50px;
+	height: 28px;
+}
+
+.cover .modal .modal-foot button:nth-child(2) {
+	background-color: #ccc;
+	margin-left: 15px;
+	width: 50px;
+	height: 28px;
+}
+
+.cover .modal .modal-foot button:hover {
+	background-color: #fff;
 }

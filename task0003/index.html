@@ -111,18 +111,23 @@
 		<div class="modal">
 			<div class="modal-head">新增主分类</div>
 			<div class="modal-body">
-				<span>选择主分类</span>
-				<select>
-					<option value="0">默认分类</option>
-					<option value="1">百度前端学院</option>
-				</select>
-				<br/>
-				<span>分类名称</span>
-				<input type="text" name="task-name">
+				<div class="modal-body-sel">
+					<span>选择主分类:</span>
+					<select class="list-sel">
+						<option value="0">默认分类</option>
+						<option value="1">百度前端学院</option>
+					</select>
+				</div>
+
+				<div class="modal-body-name">
+					<span>分类名称:</span>
+					<input type="text" name="task-name">
+				</div>
+				
 			</div>
 			<div class="modal-foot">
-				<button>取消</button>
-				<button>确认</button>
+				<button class="btn-add-quit">取消</button>
+				<button class="btn-add-ok">确认</button>
 			</div>
 		</div>
 	</div>

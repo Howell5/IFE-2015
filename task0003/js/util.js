@@ -322,7 +322,7 @@ function addEvent(element, event, listener) {
 // 移除element对象对于event事件发生时执行listener的响应
 function removeEvent(element, event, listener) {
     element.removeEventListener(event, listener, false);
-    1
+    
 }
 
 // 实现对click事件的绑定

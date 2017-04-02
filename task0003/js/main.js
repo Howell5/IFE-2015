@@ -31,6 +31,12 @@
 	})();
 
 	var DOM = {
+		list_sel: $('.list-sel'),
+		btn_add_quit: $('.modal-foot .btn-add-quit'),
+		btn_add_ok: $('.modal-foot .btn-add-ok'),
+		item_bottom_a: $('#content-left-1 .item-bottom'),
+		item_bottom_b: $('#content-left-2 .item-bottom'),
+		coverWrap: $('.cover'),
 		btn_save: $('.bottom-area .btn-save'),
 		btn_quit: $('.bottom-area .btn-quit'),
 		icon_check: $('.check-edit .icon-check'),
@@ -122,7 +128,7 @@
 		}
 	];
 
-	var josnCate = Util.Jsonps(cate),
+	var jsonCate = Util.Jsonps(cate),
 		jsonCateChild = Util.Jsonps(cateChild),
 		jsonTask = Util.Jsonps(task);
 
@@ -145,7 +151,7 @@
 					return taskIdArr;
 					break;
 				case 2:    //选中主分类
-					var cateObj = Util.getObjByKey(josnCate, 'name', itemName)[0];
+					var cateObj = Util.getObjByKey(jsonCate, 'name', itemName)[0];
 					for (var i = 0; i < cateObj.childArr.length; i++) {
 						var childObj = Util.getObjByKey(jsonCateChild, 'id', cateObj.childArr[i])[0];
 						for (var j = 0; j < childObj.childArr.length; j++) {
@@ -167,17 +173,17 @@
 		// 渲染任务分类列表
 		var makeType = function () {
 			DOM.all_type.innerHTML = '<li class="all-items choose"><span>所有任务('+ jsonTask.length +')</span></li>'
-			for (var i = 0; i < josnCate.length; i++) {
+			for (var i = 0; i < jsonCate.length; i++) {
 				html += '<div class="item-list">'
 						+	'<li class="list-name">'
 						+	'<i class="icon-folder-open"></i>'
-						+	'<span>'+josnCate[i].name+'</span>'
+						+	'<span>'+jsonCate[i].name+'</span>'
 						+	'<span>'+'nonnum'+'</span>'
 						+		'<i class="icon-remove"></i>'
 						+	'</li>'
 						+	'<ul>';
-				for (var j = 0; j < josnCate[i].childArr.length; j++) {
-					var cateChildId = josnCate[i].childArr[j];
+				for (var j = 0; j < jsonCate[i].childArr.length; j++) {
+					var cateChildId = jsonCate[i].childArr[j];
 					html += '<li class="child-name"><i class="icon-file"></i><span>'+jsonCateChild[cateChildId].name+'</span><span>('+ jsonCateChild[cateChildId].childArr.length +')</span><i class="icon-remove"></i></li>'
 				}
 				html += '</ul></div>';
@@ -201,7 +207,7 @@
 					makeTaskById(taskIdArr);
 					break;
 				case 2:    //选中主分类
-					var cateObj = Util.getObjByKey(josnCate, 'name', itemName);
+					var cateObj = Util.getObjByKey(jsonCate, 'name', itemName);
 					for (var i = 0; i < cateObj.childArr.length; i++) {
 						var childObj = Util.getObjByKey(jsonCateChild, 'id', cateObj.childArr[i]);
 						for (var j = 0; j < childObj.childArr.length; j++) {
@@ -340,12 +346,23 @@
 		}
 
 		//还原修改前的数据
-		
 		var taskQuit = function () {
 			makeTaskDetail(demit)();
+			debugger;
 		}
 		
+		//新增主分类
+		var addList = function () {
+			var selValue = DOM.list_sel;
+			var index = selValue.selectedIndex;
+			switch(index) {
+				case 0: 
+
+			}
+
+		}
 		return {
+			addList: addList,
 			taskQuit: taskQuit,
 			taskSave: taskSave,
 			taskEdit: taskEdit,
@@ -426,9 +443,30 @@
 				show(DOM.check_edit);
 			});
 		}
-
+		//点击新增主分类按钮
+		var addListClick = function (callback) {
+			addClickEvent(DOM.item_bottom_a, function () {
+				show(DOM.coverWrap);
+			});
+		}
+		//点击新增分类的取消按钮
+		var quitAddList = function () {
+			addClickEvent(DOM.btn_add_quit, function () {
+				hide(DOM.coverWrap);
+			});
+		}
+		//点击新增分类的确认按钮
+		var sureAddList = function (callback) {
+			addClickEvent(DOM.btn_add_ok, function () {
+				callback && callback();
+				debugger;
+			});
+		}
 
 		return {
+			sureAddList: sureAddList,
+			quitAddList: quitAddList,
+			addListClick: addListClick,
 			contentQuitClick: contentQuitClick,
 			contentSaveClick: contentSaveClick,
 			editClick: editClick,
@@ -439,6 +477,14 @@
 
 
 
+	}
+
+	//保存数据
+	function saveData () {
+		Util.StorageSetter('cate', cate);
+		Util.StorageSetter('cateChild', cateChild);
+		Util.StorageSetter('task', task);
+		debugger;
 	}
 
 	function main () {
@@ -489,7 +535,13 @@
 		eventHandle.contentQuitClick(function() {
 			renderModel.taskQuit();
 		});
+		eventHandle.addListClick();
+		eventHandle.quitAddList();
+		eventHandle.sureAddList(function () {
+			renderModel.addList();
+		});
 	}
 
+	saveData();
 	main();
 })();
