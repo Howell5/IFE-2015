@@ -484,7 +484,7 @@
 		Util.StorageSetter('cate', cate);
 		Util.StorageSetter('cateChild', cateChild);
 		Util.StorageSetter('task', task);
-		debugger;
+		
 	}
 
 	function main () {
