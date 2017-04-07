@@ -31,6 +31,7 @@
 	})();
 
 	var DOM = {
+		list_val: $('.list-value'),
 		list_sel: $('.list-sel'),
 		btn_add_quit: $('.modal-foot .btn-add-quit'),
 		btn_add_ok: $('.modal-foot .btn-add-ok'),
@@ -355,8 +356,13 @@
 		var addList = function () {
 			var selValue = DOM.list_sel;
 			var index = selValue.selectedIndex;
+			var listValue = DOM.list_val.value;
+			debugger;
 			switch(index) {
-				case 0: 
+				case 0:  //默认分类,即新增主分类
+				
+					break;
+				
 
 			}
 
