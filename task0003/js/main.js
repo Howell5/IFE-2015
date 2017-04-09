@@ -349,7 +349,6 @@
 		//还原修改前的数据
 		var taskQuit = function () {
 			makeTaskDetail(demit)();
-			debugger;
 		}
 		
 		//新增主分类
@@ -357,7 +356,6 @@
 			var selValue = DOM.list_sel;
 			var index = selValue.selectedIndex;
 			var listValue = DOM.list_val.value;
-			debugger;
 			switch(index) {
 				case 0:  //默认分类,即新增主分类
 				
