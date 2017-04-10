@@ -31,7 +31,7 @@
 	})();
 
 	var DOM = {
-		list_val: $('.list-value'),
+		list_val: $('.list-val'),
 		list_sel: $('.list-sel'),
 		btn_add_quit: $('.modal-foot .btn-add-quit'),
 		btn_add_ok: $('.modal-foot .btn-add-ok'),
@@ -133,7 +133,7 @@
 		jsonCateChild = Util.Jsonps(cateChild),
 		jsonTask = Util.Jsonps(task);
 
-	var html = '';
+	var html = "";
 	function todo () {
 		// TODO: 任务编辑操作
 	}
@@ -354,17 +354,35 @@
 		//新增主分类
 		var addList = function () {
 			var selValue = DOM.list_sel;
-			var index = selValue.selectedIndex;
+			var index = selValue.value;
 			var listValue = DOM.list_val.value;
-			switch(index) {
-				case 0:  //默认分类,即新增主分类
-				
-					break;
-				
-
+			if (listValue === '') {
+				throw new Error('新分类名称不准为空！');
+				alert('新分类名称不准为空！');
+			} else if (index === '-1') { //新增主分类
+				var newCate = {
+					"id": cate[cate.length-1].id + 1,
+					"childArr": [],
+					"name": listValue
+				};
+				cate.push(newCate);
+				saveData();
+			} else {
+				var newCateChild = {
+					"id": cateChild[cateChild.length-1].id + 1,
+					"name": listValue,
+					"childArr": [],
+					"fatherId": index
+				}
+				cate[index].childArr.push(newCateChild.id);
+				cateChild.push(newCateChild);
+				saveData();
+				debugger;
 			}
+			
 
 		}
+
 		return {
 			addList: addList,
 			taskQuit: taskQuit,
