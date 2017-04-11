@@ -129,11 +129,8 @@
 		}
 	];
 
-	var jsonCate = Util.Jsonps(cate),
-		jsonCateChild = Util.Jsonps(cateChild),
-		jsonTask = Util.Jsonps(task);
 
-	var html = "";
+	var html = '';
 	function todo () {
 		// TODO: 任务编辑操作
 	}
@@ -146,15 +143,15 @@
 			var itemName = choose.getElementsByTagName('span')[0].innerHTML;
 			switch (flag) {
 				case 1:    //选中所有任务
-					for (var i = 0; i < jsonTask.length; i++) {
-						taskIdArr.push(jsonTask[i].id);
+					for (var i = 0; i < task.length; i++) {
+						taskIdArr.push(task[i].id);
 					}
 					return taskIdArr;
 					break;
 				case 2:    //选中主分类
-					var cateObj = Util.getObjByKey(jsonCate, 'name', itemName)[0];
+					var cateObj = Util.getObjByKey(cate, 'name', itemName)[0];
 					for (var i = 0; i < cateObj.childArr.length; i++) {
-						var childObj = Util.getObjByKey(jsonCateChild, 'id', cateObj.childArr[i])[0];
+						var childObj = Util.getObjByKey(cateChild, 'id', cateObj.childArr[i])[0];
 						for (var j = 0; j < childObj.childArr.length; j++) {
 							taskIdArr.push(childObj.childArr[j]);
 						}
@@ -162,7 +159,7 @@
 					return taskIdArr;
 					break;
 				case 3:    //选中子分类
-					var childObj = Util.getObjByKey(jsonCateChild, 'name', itemName)[0];
+					var childObj = Util.getObjByKey(cateChild, 'name', itemName)[0];
 					for (var i = 0; i < childObj.childArr.length; i++) {
 						taskIdArr.push(childObj.childArr[i]);
 					}
@@ -173,19 +170,19 @@
 
 		// 渲染任务分类列表
 		var makeType = function () {
-			DOM.all_type.innerHTML = '<li class="all-items choose"><span>所有任务('+ jsonTask.length +')</span></li>'
-			for (var i = 0; i < jsonCate.length; i++) {
+			DOM.all_type.innerHTML = '<li class="all-items choose"><span>所有任务('+ task.length +')</span></li>'
+			for (var i = 0; i < cate.length; i++) {
 				html += '<div class="item-list">'
 						+	'<li class="list-name">'
 						+	'<i class="icon-folder-open"></i>'
-						+	'<span>'+jsonCate[i].name+'</span>'
+						+	'<span>'+cate[i].name+'</span>'
 						+	'<span>'+'nonnum'+'</span>'
 						+		'<i class="icon-remove"></i>'
 						+	'</li>'
 						+	'<ul>';
-				for (var j = 0; j < jsonCate[i].childArr.length; j++) {
-					var cateChildId = jsonCate[i].childArr[j];
-					html += '<li class="child-name"><i class="icon-file"></i><span>'+jsonCateChild[cateChildId].name+'</span><span>('+ jsonCateChild[cateChildId].childArr.length +')</span><i class="icon-remove"></i></li>'
+				for (var j = 0; j < cate[i].childArr.length; j++) {
+					var cateChildId = cate[i].childArr[j];
+					html += '<li class="child-name"><i class="icon-file"></i><span>'+cateChild[cateChildId].name+'</span><span>('+ cateChild[cateChildId].childArr.length +')</span><i class="icon-remove"></i></li>'
 				}
 				html += '</ul></div>';
 			}
@@ -202,15 +199,15 @@
 			var itemName = choose.getElementsByTagName('span')[0].innerHTML;
 			switch (flag) {
 				case 1:    //选中所有任务
-					for (var i = 0; i < jsonTask.length; i++) {
-						taskIdArr.push(jsonTask[i].id);
+					for (var i = 0; i < task.length; i++) {
+						taskIdArr.push(task[i].id);
 					}
 					makeTaskById(taskIdArr);
 					break;
 				case 2:    //选中主分类
-					var cateObj = Util.getObjByKey(jsonCate, 'name', itemName);
+					var cateObj = Util.getObjByKey(cate, 'name', itemName);
 					for (var i = 0; i < cateObj.childArr.length; i++) {
-						var childObj = Util.getObjByKey(jsonCateChild, 'id', cateObj.childArr[i]);
+						var childObj = Util.getObjByKey(cateChild, 'id', cateObj.childArr[i]);
 						for (var j = 0; j < childObj.childArr.length; j++) {
 							taskIdArr.push(childObj.childArr[j]);
 						}
@@ -218,7 +215,7 @@
 					makeTaskById(taskIdArr);
 					break;
 				case 3:    //选中子分类
-					var childObj = Util.getObjByKey(jsonCateChild, 'name', itemName);
+					var childObj = Util.getObjByKey(cateChild, 'name', itemName);
 					for (var i = 0; i < childObj.childArr.length; i++) {
 						taskIdArr.push(childObj.childArr[i]);
 					}
@@ -234,7 +231,7 @@
 			var unfinishIdArr = [];
 			var taskArr = [];
 			for (var i = 0; i < taskIdArr.length; i++) {
-				var taskChoose = Util.getObjByKey(jsonTask, 'id', taskIdArr[i])[0];
+				var taskChoose = Util.getObjByKey(task, 'id', taskIdArr[i])[0];
 				taskArr.push(taskChoose);
 			}
 			for (var i = 0; i < taskArr.length; i++) {
@@ -263,7 +260,7 @@
 			var date = [];
 			var taskDate;
 			for (var i = 0; i < taskIdArr.length; i++) {
-				taskDate = Util.getObjByKey(jsonTask, 'id', taskIdArr[i])[0].date;
+				taskDate = Util.getObjByKey(task, 'id', taskIdArr[i])[0].date;
 				date.push(taskDate);
 			}
 			date = uniqArray(date);  //去重
@@ -272,7 +269,7 @@
 			var mesHtml = '';
 			for (var i = 0; i < date.length; i++) {
 				mesHtml += '<div class="task-date">'+ date[i] +'</div><ul>';
-				var taskObjSameDate = Util.getObjByKey(jsonTask, 'date', date[i]); //获取拥有相同日期的task
+				var taskObjSameDate = Util.getObjByKey(task, 'date', date[i]); //获取拥有相同日期的task
 
 				for (var j = 0; j < taskObjSameDate.length; j++) {
 					isFinished(taskObjSameDate[j]);
@@ -303,7 +300,7 @@
 		//渲染任务详细信息
 		var makeTaskDetail = function (taskli) {
 			var taskName = taskli.innerText;
-			var taskObj = Util.getObjByKey(jsonTask, 'name', taskName)[0];
+			var taskObj = Util.getObjByKey(task, 'name', taskName)[0];
 			DOM.todo_name.innerText = taskObj.name;
 			DOM.todo_date.innerText = taskObj.date;
 			DOM.todo_content.innerText = taskObj.content;
@@ -367,19 +364,20 @@
 				};
 				cate.push(newCate);
 				saveData();
+
 			} else {
-				var newCateChild = {
+				var newcateChild = {
 					"id": cateChild[cateChild.length-1].id + 1,
 					"name": listValue,
 					"childArr": [],
 					"fatherId": index
 				}
-				cate[index].childArr.push(newCateChild.id);
-				cateChild.push(newCateChild);
+				cate[index].childArr.push(newcateChild.id);
+				cateChild.push(newcateChild);
 				saveData();
-				debugger;
 			}
-			
+			makeType();
+			hide(DOM.coverWrap);
 
 		}
 
@@ -481,7 +479,6 @@
 		var sureAddList = function (callback) {
 			addClickEvent(DOM.btn_add_ok, function () {
 				callback && callback();
-				debugger;
 			});
 		}
 
@@ -503,13 +500,13 @@
 
 	//保存数据
 	function saveData () {
-		Util.StorageSetter('cate', cate);
-		Util.StorageSetter('cateChild', cateChild);
-		Util.StorageSetter('task', task);
-		
-	}
+		Util.StorageSetter('cate', JSON.stringify(cate));
+		Util.StorageSetter('cateChild', JSON.stringify(cateChild));
+		Util.StorageSetter('task', JSON.stringify(task));
+	}		
 
 	function main () {
+		saveData();
 		// TODO: 执行入口
 		var renderModel = renderBase();
 		var eventHandle = EventHandle();
@@ -563,7 +560,11 @@
 			renderModel.addList();
 		});
 	}
-
-	saveData();
+	win.onload = function () {
+		var cate = JSON.parse(Util.StorageGetter('cate')),
+			cateChild = JSON.parse(Util.StorageGetter('cateChild')),
+			task = JSON.parse(Util.StorageGetter('task'));
+	}
+	
 	main();
 })();
