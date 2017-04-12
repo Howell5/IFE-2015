@@ -131,10 +131,7 @@
 
 
 	var html = '';
-	function todo () {
-		// TODO: 任务编辑操作
-	}
-
+	
 	function renderBase () {
 		var taskIdArr;
 		// 获得 taskIdArr 方法
