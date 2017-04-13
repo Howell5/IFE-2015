@@ -136,8 +136,8 @@
 	];
 
 
-	var html = '';
-
+	var html = '',
+		optionHtml = '';
 
 	function renderBase () {
 		var taskIdArr;
@@ -175,6 +175,7 @@
 		// 渲染任务分类列表
 		var makeType = function () {
 			html = '';
+			optionHtml = '<option value="-1">**新增主分类**</option>';
 			DOM.all_type.innerHTML = '<li class="all-items choose"><span>所有任务('+ task.length +')</span></li>'
 			for (var i = 0; i < cate.length; i++) {
 				html += '<div class="item-list">'
@@ -185,6 +186,7 @@
 						+		'<i class="icon-remove"></i>'
 						+	'</li>'
 						+	'<ul>';
+				optionHtml += '<option value="'+ cate[i].id +'">' + cate[i].name + '</option>';
 				for (var j = 0; j < cate[i].childArr.length; j++) {
 					var cateChildId = cate[i].childArr[j];
 					html += '<li class="child-name"><i class="icon-file"></i><span>'+cateChild[cateChildId].name+'</span><span>('+ cateChild[cateChildId].childArr.length +')</span><i class="icon-remove"></i></li>'
@@ -193,6 +195,7 @@
 			}
 
 			DOM.items_list.innerHTML = html;
+			DOM.list_sel.innerHTML = optionHtml;
 		}
 
 		//生成任务二层信息列表
@@ -200,34 +203,6 @@
 			taskIdArr = getTaskIdArr(choose,flag);
 			makeTaskById(taskIdArr);
 			statusHandle(1);
-			/*var taskIdArr = [];
-			var itemName = choose.getElementsByTagName('span')[0].innerHTML;
-			switch (flag) {
-				case 1:    //选中所有任务
-					for (var i = 0; i < task.length; i++) {
-						taskIdArr.push(task[i].id);
-					}
-					makeTaskById(taskIdArr);
-					break;
-				case 2:    //选中主分类
-					var cateObj = Util.getObjByKey(cate, 'name', itemName);
-					for (var i = 0; i < cateObj.childArr.length; i++) {
-						var childObj = Util.getObjByKey(cateChild, 'id', cateObj.childArr[i]);
-						for (var j = 0; j < childObj.childArr.length; j++) {
-							taskIdArr.push(childObj.childArr[j]);
-						}
-					}
-					makeTaskById(taskIdArr);
-					break;
-				case 3:    //选中子分类
-					var childObj = Util.getObjByKey(cateChild, 'name', itemName);
-					for (var i = 0; i < childObj.childArr.length; i++) {
-						taskIdArr.push(childObj.childArr[i]);
-					}
-					makeTaskById(taskIdArr);
-			};*/
-			
-			
 		}
 
 		//渲染筛选菜单
@@ -572,12 +547,10 @@
 			Util.StorageSetter('cate', JSON.stringify(cateText));
 			Util.StorageSetter('cateChild', JSON.stringify(cateChildText));
 			Util.StorageSetter('task', JSON.stringify(taskText));
-			console.log('no localStorage!');
 		}
 		cate = JSON.parse(Util.StorageGetter('cate')),
 		cateChild = JSON.parse(Util.StorageGetter('cateChild')),
 		task = JSON.parse(Util.StorageGetter('task'));
-		console.log('have localStorage!');
 		main();
 	}
 	
