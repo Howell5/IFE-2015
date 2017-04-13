@@ -1,6 +1,9 @@
 // 避免污染全局变量
 'use strict';
 (function (){
+
+
+
 	//封装常用方法
 	var Util = (function () {
 		var prex = 'TASK_MANAGER_';
@@ -56,11 +59,14 @@
 		name_lists: $('.items-list').getElementsByTagName('li')
 	}
 	var Win = window,
-		Doc = document;
+		Doc = document,
+		cate,
+		cateChild,
+		task;
 
 //  使用localStorage + JSON存储任务数据
 //  其中cate 表示主分类列表，cateChild 表示子分类列表，task 表示任务详细数据
-	var cate = [
+	var cateText = [
 		{
 			"id": 0,
 			"childArr": [0],
@@ -72,7 +78,7 @@
 			"name": "百度前端学院"
 		}
 	];
-	var cateChild = [
+	var cateChildText = [
 		{
 			"id": 0,
 			"name": "默认子分类",
@@ -92,7 +98,7 @@
 			"fatherId": 1
 		}
 	];
-	var task = [
+	var taskText = [
 		{
 			"id": 0,
 			"name": "sad-0",
@@ -131,7 +137,8 @@
 
 
 	var html = '';
-	
+
+
 	function renderBase () {
 		var taskIdArr;
 		// 获得 taskIdArr 方法
@@ -167,13 +174,14 @@
 
 		// 渲染任务分类列表
 		var makeType = function () {
+			html = '';
 			DOM.all_type.innerHTML = '<li class="all-items choose"><span>所有任务('+ task.length +')</span></li>'
 			for (var i = 0; i < cate.length; i++) {
 				html += '<div class="item-list">'
 						+	'<li class="list-name">'
 						+	'<i class="icon-folder-open"></i>'
 						+	'<span>'+cate[i].name+'</span>'
-						+	'<span>'+'nonnum'+'</span>'
+						+	'<span>('+'nonnum'+')</span>'
 						+		'<i class="icon-remove"></i>'
 						+	'</li>'
 						+	'<ul>';
@@ -339,7 +347,6 @@
 			}
 			
 		}
-
 		//还原修改前的数据
 		var taskQuit = function () {
 			makeTaskDetail(demit)();
@@ -496,14 +503,9 @@
 	}
 
 	//保存数据
-	function saveData () {
-		Util.StorageSetter('cate', JSON.stringify(cate));
-		Util.StorageSetter('cateChild', JSON.stringify(cateChild));
-		Util.StorageSetter('task', JSON.stringify(task));
-	}		
+		
 
 	function main () {
-		saveData();
 		// TODO: 执行入口
 		var renderModel = renderBase();
 		var eventHandle = EventHandle();
@@ -557,11 +559,27 @@
 			renderModel.addList();
 		});
 	}
-	win.onload = function () {
-		var cate = JSON.parse(Util.StorageGetter('cate')),
-			cateChild = JSON.parse(Util.StorageGetter('cateChild')),
-			task = JSON.parse(Util.StorageGetter('task'));
+
+	function saveData () {
+		Util.StorageSetter('cate', JSON.stringify(cate));
+		Util.StorageSetter('cateChild', JSON.stringify(cateChild));
+		Util.StorageSetter('task', JSON.stringify(task));
+	}	
+
+
+	Win.onload = function () {
+		if (!Util.StorageGetter('cate')) {
+			Util.StorageSetter('cate', JSON.stringify(cateText));
+			Util.StorageSetter('cateChild', JSON.stringify(cateChildText));
+			Util.StorageSetter('task', JSON.stringify(taskText));
+			console.log('no localStorage!');
+		}
+		cate = JSON.parse(Util.StorageGetter('cate')),
+		cateChild = JSON.parse(Util.StorageGetter('cateChild')),
+		task = JSON.parse(Util.StorageGetter('task'));
+		console.log('have localStorage!');
+		main();
 	}
 	
-	main();
+	
 })();
