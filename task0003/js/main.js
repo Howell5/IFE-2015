@@ -54,6 +54,7 @@
 		selBtn_lists: $('.task-menu').getElementsByTagName('li'),
 		task_message: $('.task-message'),
 		all_type: $('.all-type'),
+		all_item: $('.all-type').firstElementChild,
 		task_list: $('.task-list'),
 		items_list: $('.items-list'),
 		name_lists: $('.items-list').getElementsByTagName('li')
@@ -137,7 +138,8 @@
 
 
 	var html = '',
-		optionHtml = '';
+		optionHtml = '',
+		nonnum;
 
 	function renderBase () {
 		var taskIdArr;
@@ -175,6 +177,7 @@
 		// 渲染任务分类列表
 		var makeType = function () {
 			html = '';
+			setNum();
 			optionHtml = '<option value="-1">**新增主分类**</option>';
 			DOM.all_type.innerHTML = '<li class="all-items choose"><span>所有任务('+ task.length +')</span></li>'
 			for (var i = 0; i < cate.length; i++) {
@@ -182,7 +185,7 @@
 						+	'<li class="list-name">'
 						+	'<i class="icon-folder-open"></i>'
 						+	'<span>'+cate[i].name+'</span>'
-						+	'<span>('+'nonnum'+')</span>'
+						+	'<span>('+cate[i].num+')</span>'
 						+		'<i class="icon-remove"></i>'
 						+	'</li>'
 						+	'<ul>';
@@ -196,6 +199,19 @@
 
 			DOM.items_list.innerHTML = html;
 			DOM.list_sel.innerHTML = optionHtml;
+
+			//获取主类里 task 的总个数
+			function setNum () {
+				var num;
+				for (var i = 0; i < cate.length; i++) {
+					num = 0;
+					for (var j = 0; j < cate[i].childArr.length; j++) {
+						var cateChildId = cate[i].childArr[j];
+						num += cateChild[cateChildId].childArr.length;
+					}
+					cate[i].num = num;
+				}
+			}
 		}
 
 		//生成任务二层信息列表
@@ -255,9 +271,6 @@
 					isFinished(taskObjSameDate[j]);
 				}
 			}
-
-			//生成li标签函数
-			// var renderLi = function (date)
 
 			function isFinished (obj) {
 				if (obj.finish) {
@@ -355,40 +368,34 @@
 				cateChild.push(newcateChild);
 				saveData();
 			}
-			makeType();
+			init();
 			hide(DOM.coverWrap);
 
 		}
 
+		var init = function () {
+			makeType();
+			makeTask(DOM.all_type.firstElementChild, 1);
+			makeTaskDetail(DOM.task_message.getElementsByTagName('li')[0]);
+		}
+
 		return {
+			init: init,
 			addList: addList,
 			taskQuit: taskQuit,
 			taskSave: taskSave,
 			taskEdit: taskEdit,
 			makeTaskDetail: makeTaskDetail,
 			statusHandle: statusHandle,
-			makeType: makeType,
 			makeTask: makeTask
 		}
 	}
 
 	function EventHandle () {
-		//TODO: 页面交互效果
-		
-		//按钮hover效果
-		/*function listHover () {
-			delegateEvent(DOM.items_list, 'li', 'mouseover', function(name) {
-				hideToggle(name);
-			});
-			delegateEvent(DOM.items_list, 'li', 'mouseout', function(name) {
-				hideToggle(name);
-			});
-		}
-		listHover();*/
+
 		var firstSelBtn = DOM.task_menu.firstElementChild;
 		//分类列表点击
 		var cateClick = function (callback) {
-			var all_items = DOM.all_type.firstElementChild;
 			delegateEvent(DOM.task_list, 'li', 'click', function(name) {
 				for (var i = 0; i < DOM.name_lists.length; i++) {
 					removeClass(DOM.name_lists[i], 'choose');
@@ -396,7 +403,7 @@
 				for (var i = 0; i < DOM.selBtn_lists.length; i++) {
 					removeClass(DOM.selBtn_lists[i], 'choose');
 				}
-				removeClass(all_items, 'choose');
+				removeClass(DOM.all_type.firstElementChild, 'choose');
 				addClass(name, 'choose');
 				addClass(firstSelBtn, 'choose');
 				callback && callback(name);
@@ -485,7 +492,7 @@
 		var renderModel = renderBase();
 		var eventHandle = EventHandle();
 		var flag;
-		renderModel.makeType();
+		renderModel.init();
 		eventHandle.cateClick(function(name) {
 			if (name.className.indexOf('all-items') !==-1) {
 				//选中所有任务
