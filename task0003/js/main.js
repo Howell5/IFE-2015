@@ -319,23 +319,29 @@
 				dateInputValue = DOM.todo_date.firstElementChild.value,
 				contentInputValue = DOM.todo_content.firstElementChild.value;
 
-			if(!nameInputValue || !dateInputValue || contentInputValue) {
+			if(!nameInputValue || !dateInputValue || !contentInputValue) {
+				debugger;
 				alert('填写内容不得为空');
 				return;
-			} else if (getObjByKey(task, 'name', nameInputValue).length === 0) {
-				alert('检测到有相同名称的任务已存在');
-				return;
-			} else if (!isDate(dateInputValue)) {
+			} 
+			// else if (Util.getObjByKey(task, 'name', nameInputValue).length === 0) {
+			// 	alert('检测到有相同名称的任务已存在');
+			// 	return;
+			// } 
+			else if (!isDate(dateInputValue)) {
 				alert('日期填写错误');
 				return;
 			}
 
 			//一、保存现有的任务的修改
 			
-			
-			DOM.todo_name.innerText = nameInputValue;
-			DOM.todo_date.innerText = dateInputValue;
-			DOM.todo_content.innerText = contentInputValue;
+			var activeTask = Util.getObjByKey(task, 'name', demit.innerText)[0];
+			activeTask.name = nameInputValue;
+			activeTask.date = dateInputValue;
+			activeTask.content = contentInputValue;
+
+			saveData();
+			init();
 
 			hide(DOM.bottom_button);
 			show(DOM.check_edit);
@@ -347,6 +353,18 @@
 		//还原修改前的数据
 		var taskQuit = function () {
 			makeTaskDetail(demit);
+		}
+
+		var taskFinish = function () {
+			var activeTask = Util.getObjByKey(task, 'name', demit.innerText)[0];
+			debugger;
+			if (activeTask.finish) {
+				alert('该任务已经是完成状态了');
+			} else {
+				activeTask.finish = true;
+			}
+			saveData();
+			init();
 		}
 		
 		//新增主分类
@@ -390,6 +408,7 @@
 
 		return {
 			init: init,
+			taskFinish: taskFinish,
 			addList: addList,
 			taskQuit: taskQuit,
 			taskSave: taskSave,
@@ -444,6 +463,13 @@
 				callback && callback();
 			});
 		}
+
+		//点击任务完成按钮
+		var checkClick = function (callback) {
+			addClickEvent(DOM.icon_check, function () {
+				callback && callback();
+			})
+		}
 		//点击保存按钮
 		var contentSaveClick = function (callback) {
 			addClickEvent(DOM.btn_save, function () {
@@ -484,6 +510,7 @@
 		}
 
 		return {
+			checkClick: checkClick,
 			sureAddList: sureAddList,
 			quitAddList: quitAddList,
 			addListClick: addListClick,
@@ -539,7 +566,7 @@
 			}
 		});
 		eventHandle.taskNameClick(function(taskName) {
-			renderModel.makeTaskDetail(taskName)();
+			renderModel.makeTaskDetail(taskName);
 		});
 		eventHandle.editClick(function() {
 			renderModel.taskEdit();
@@ -555,6 +582,9 @@
 		eventHandle.sureAddList(function () {
 			renderModel.addList();
 		});
+		eventHandle.checkClick(function () {
+			renderModel.taskFinish();
+		})
 	}
 
 	function saveData () {
