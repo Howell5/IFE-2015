@@ -297,12 +297,9 @@
 			DOM.todo_name.innerText = taskObj.name;
 			DOM.todo_date.innerText = taskObj.date;
 			DOM.todo_content.innerText = taskObj.content;
-			return function() {
+			return (function() {
 				demit = taskli;
-			};
-			
-
-			
+			})();
 		}
 
 		//页面内容编辑模式
@@ -317,27 +314,39 @@
 		}
 
 		//保存页面编辑内容
-		var taskSave = function () {
+		var taskSave = function (cTask) {
 			var nameInputValue = DOM.todo_name.firstElementChild.value,
 				dateInputValue = DOM.todo_date.firstElementChild.value,
 				contentInputValue = DOM.todo_content.firstElementChild.value;
 
-			
-			if (nameInputValue != '' && isDate(dateInputValue) && contentInputValue != '') {
-				DOM.todo_name.innerText = nameInputValue;
-				DOM.todo_date.innerText = dateInputValue;
-				DOM.todo_content.innerText = contentInputValue;
-
-				hide(DOM.bottom_button);
-				show(DOM.check_edit);
-			} else {
-				alert('请填写正确的内容格式！');
+			if(!nameInputValue || !dateInputValue || contentInputValue) {
+				alert('填写内容不得为空');
+				return;
+			} else if (getObjByKey(task, 'name', nameInputValue).length === 0) {
+				alert('检测到有相同名称的任务已存在');
+				return;
+			} else if (!isDate(dateInputValue)) {
+				alert('日期填写错误');
+				return;
 			}
+
+			//一、保存现有的任务的修改
+			
+			
+			DOM.todo_name.innerText = nameInputValue;
+			DOM.todo_date.innerText = dateInputValue;
+			DOM.todo_content.innerText = contentInputValue;
+
+			hide(DOM.bottom_button);
+			show(DOM.check_edit);
+			
+
+			//二、保存新建任务
 			
 		}
 		//还原修改前的数据
 		var taskQuit = function () {
-			makeTaskDetail(demit)();
+			makeTaskDetail(demit);
 		}
 		
 		//新增主分类
@@ -370,7 +379,7 @@
 			}
 			init();
 			hide(DOM.coverWrap);
-
+			listValue = '';
 		}
 
 		var init = function () {
@@ -439,6 +448,7 @@
 		var contentSaveClick = function (callback) {
 			addClickEvent(DOM.btn_save, function () {
 				callback && callback();
+
 			});
 		}
 		//点击取消按钮
@@ -466,6 +476,11 @@
 			addClickEvent(DOM.btn_add_ok, function () {
 				callback && callback();
 			});
+		}
+
+		//点击新增任务按钮
+		var addTaskClick = function (callback) {
+
 		}
 
 		return {
