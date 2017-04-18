@@ -297,6 +297,9 @@
 			DOM.todo_name.innerText = taskObj.name;
 			DOM.todo_date.innerText = taskObj.date;
 			DOM.todo_content.innerText = taskObj.content;
+
+			hide(DOM.bottom_button);
+			show(DOM.check_edit);
 			return (function() {
 				demit = taskli;
 			})();
@@ -357,7 +360,6 @@
 
 		var taskFinish = function () {
 			var activeTask = Util.getObjByKey(task, 'name', demit.innerText)[0];
-			debugger;
 			if (activeTask.finish) {
 				alert('该任务已经是完成状态了');
 			} else {
@@ -506,10 +508,13 @@
 
 		//点击新增任务按钮
 		var addTaskClick = function (callback) {
-
+			addClickEvent(DOM.item_bottom_b, function () {
+				callback && callback();
+			})
 		}
 
 		return {
+			addTaskClick: addTaskClick,
 			checkClick: checkClick,
 			sureAddList: sureAddList,
 			quitAddList: quitAddList,
