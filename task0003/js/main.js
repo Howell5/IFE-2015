@@ -1,8 +1,6 @@
 // 避免污染全局变量
-'use strict';
 (function (){
-
-
+'use strict';
 
 	//封装常用方法
 	var Util = (function () {
@@ -180,7 +178,7 @@
 			setNum();
 			optionHtml = '<option value="-1">**新增主分类**</option>';
 			DOM.all_type.innerHTML = '<li class="all-items choose"><span>所有任务('+ task.length +')</span></li>'
-			for (var i = 0; i < cate.length; i++) {
+			for (var i = 0, len = cate.length; i < len; i++) {
 				html += '<div class="item-list">'
 						+	'<li class="list-name">'
 						+	'<i class="icon-folder-open"></i>'
@@ -189,7 +187,9 @@
 						+		'<i class="icon-remove"></i>'
 						+	'</li>'
 						+	'<ul>';
-				optionHtml += '<option value="'+ cate[i].id +'">' + cate[i].name + '</option>';
+				if (i < len - 1) {
+					optionHtml += '<option value="'+ cate[i+1].id +'">' + cate[i+1].name + '</option>';
+				}
 				for (var j = 0; j < cate[i].childArr.length; j++) {
 					var cateChildId = cate[i].childArr[j];
 					html += '<li class="child-name"><i class="icon-file"></i><span>'+cateChild[cateChildId].name+'</span><span>('+ cateChild[cateChildId].childArr.length +')</span><i class="icon-remove"></i></li>'
@@ -305,16 +305,31 @@
 			})();
 		}
 
-		//页面内容编辑模式
+		//页面内容修改编辑模式
 		var taskEdit = function () {
 			hide(DOM.check_edit);
 			show(DOM.bottom_button);
 			var content = DOM.todo_content.innerText;
 			var contentHTML = '<textarea name="text-content" class="textarea-content">'+ content +'</textarea>';
+			
 			DOM.todo_content.innerHTML = contentHTML;
 			DOM.todo_date.innerHTML = '<input placeholder="例:2017-2-15" type="date" name="todo-date" >';
-			DOM.todo_name.innerHTML = '<input type="text" name="todo-name" value='+DOM.todo_name.innerText+'>';	
+			DOM.todo_name.innerHTML = '<input type="text" name="todo-name" value='+DOM.todo_name.innerText+'>';
+				
 		}
+
+		//页面新内容编辑模式
+		var newTaskEdit = function () {
+			demit = undefined;
+			hide(DOM.check_edit);
+			show(DOM.bottom_button);
+			
+			DOM.todo_content.innerHTML = '<textarea name="text-content" class="textarea-content"></textarea>';
+			DOM.todo_date.innerHTML = '<input placeholder="例:2017-2-15" type="date" name="todo-date" >';
+			DOM.todo_name.innerHTML = '<input type="text" name="todo-name" value="">';
+				
+		}
+
 
 		//保存页面编辑内容
 		var taskSave = function (cTask) {
@@ -337,11 +352,26 @@
 			}
 
 			//一、保存现有的任务的修改
+			if (demit) {
+				var activeTask = Util.getObjByKey(task, 'name', demit.innerText)[0];
+				activeTask.name = nameInputValue;
+				activeTask.date = dateInputValue;
+				activeTask.content = contentInputValue;
+
+			} else {  //二、保存新建任务的信息
+				var newTask = {
+
+					"id": task.length,
+					"name": nameInputValue,
+					"date": dateInputValue,
+					"content": contentInputValue,
+					"fatherId": 1,
+					"finish": false
+
+				}
+
+			}
 			
-			var activeTask = Util.getObjByKey(task, 'name', demit.innerText)[0];
-			activeTask.name = nameInputValue;
-			activeTask.date = dateInputValue;
-			activeTask.content = contentInputValue;
 
 			saveData();
 			init();
@@ -349,13 +379,15 @@
 			hide(DOM.bottom_button);
 			show(DOM.check_edit);
 			
-
-			//二、保存新建任务
-			
 		}
 		//还原修改前的数据
 		var taskQuit = function () {
-			makeTaskDetail(demit);
+			if (demit) {
+				makeTaskDetail(demit);
+			} else {
+				init();
+			}
+			
 		}
 
 		var taskFinish = function () {
@@ -410,11 +442,12 @@
 
 		return {
 			init: init,
-			taskFinish: taskFinish,
 			addList: addList,
 			taskQuit: taskQuit,
 			taskSave: taskSave,
 			taskEdit: taskEdit,
+			taskFinish: taskFinish,
+			newTaskEdit: newTaskEdit,
 			makeTaskDetail: makeTaskDetail,
 			statusHandle: statusHandle,
 			makeTask: makeTask
@@ -510,7 +543,7 @@
 		var addTaskClick = function (callback) {
 			addClickEvent(DOM.item_bottom_b, function () {
 				callback && callback();
-			})
+			});
 		}
 
 		return {
@@ -589,7 +622,10 @@
 		});
 		eventHandle.checkClick(function () {
 			renderModel.taskFinish();
-		})
+		});
+		eventHandle.addTaskClick(function () {
+			renderModel.newTaskEdit();
+		});
 	}
 
 	function saveData () {
