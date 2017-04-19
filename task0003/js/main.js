@@ -141,6 +141,7 @@
 
 	function renderBase () {
 		var taskIdArr;
+		var cFlag;
 		// 获得 taskIdArr 方法
 		var getTaskIdArr = function (choose,flag) {
 			var taskIdArr = [];
@@ -219,6 +220,9 @@
 			taskIdArr = getTaskIdArr(choose,flag);
 			makeTaskById(taskIdArr);
 			statusHandle(1);
+			return (function (){
+				cFlag = flag;
+			})();
 		}
 
 		//渲染筛选菜单
@@ -338,7 +342,6 @@
 				contentInputValue = DOM.todo_content.firstElementChild.value;
 
 			if(!nameInputValue || !dateInputValue || !contentInputValue) {
-				debugger;
 				alert('填写内容不得为空');
 				return;
 			} 
@@ -359,6 +362,8 @@
 				activeTask.content = contentInputValue;
 
 			} else {  //二、保存新建任务的信息
+				cFlag;
+				debugger;
 				var newTask = {
 
 					"id": task.length,
