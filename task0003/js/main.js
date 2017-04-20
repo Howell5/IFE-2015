@@ -363,6 +363,7 @@
 
 			} else {  //二、保存新建任务的信息
 				cFlag;
+				var fatherid;
 				debugger;
 				var newTask = {
 
@@ -370,7 +371,7 @@
 					"name": nameInputValue,
 					"date": dateInputValue,
 					"content": contentInputValue,
-					"fatherId": 1,
+					"fatherId": ,
 					"finish": false
 
 				}
