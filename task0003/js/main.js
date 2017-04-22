@@ -43,6 +43,7 @@
 		btn_quit: $('.bottom-area .btn-quit'),
 		icon_check: $('.check-edit .icon-check'),
 		icon_edit: $('.check-edit .icon-edit'),
+		icon_del: $('.icon-remove'),
 		bottom_button: $('.bottom-area .bottom-button'),
 		check_edit: $('.task-title .check-edit'),
 		todo_name: $('.task-title .todo-name'),
@@ -370,11 +371,16 @@
 					} else if (cFlag === 2) { //当选中为主分类时，添加新任务
 						aCate = Util.getObjByKey(cate, 'name', itemName)[0];
 						fatherid = aCate.childArr[0];
+						if (!fatherid) {
+							alert('请先放弃新建任务，先新建子分类才可新添加任务');
+						}
 					} else if (cflag === 3) { //当选中为次分类时，添加新任务
 						aCate = Util.getObjByKey(cateChild, 'name', itemName)[0];
 						fatherid = aCate.id;
 					}
+
 					return fatherid;
+
 				})(cFlag, aChoose);
 				var newTask = {
 					"id": task.length,
@@ -391,7 +397,8 @@
 
 			}
 			saveData();
-			init();
+			makeTask(aChoose, cFlag);
+			makeTaskDetail(DOM.task_message.getElementsByTagName('li')[0]);
 
 			hide(DOM.bottom_button);
 			show(DOM.check_edit);
@@ -451,6 +458,10 @@
 			hide(DOM.coverWrap);
 			listValue = '';
 		}
+		//删除分类或任务
+		var Deleter = function (ele) {
+			debugger;
+		}
 
 		var init = function () {
 			makeType();
@@ -464,6 +475,7 @@
 
 		return {
 			init: init,
+			Deleter: Deleter,
 			addList: addList,
 			taskQuit: taskQuit,
 			taskSave: taskSave,
@@ -567,8 +579,15 @@
 				callback && callback();
 			});
 		}
+		//点击删除按钮
+		var DeleteClick = function (callback) {
+			addClickEvent(DOM.icon_del, function (ele) {
+				callback && callback(ele);
+			})
+		}
 
 		return {
+			DeleteClick: DeleteClick,
 			addTaskClick: addTaskClick,
 			checkClick: checkClick,
 			sureAddList: sureAddList,
@@ -648,6 +667,9 @@
 		eventHandle.addTaskClick(function () {
 			renderModel.newTaskEdit();
 		});
+		eventHandle.DeleteClick(function (ele) {
+			renderModel.Deleter(ele);
+		})
 	}
 
 	function saveData () {
@@ -666,6 +688,7 @@
 		cate = JSON.parse(Util.StorageGetter('cate')),
 		cateChild = JSON.parse(Util.StorageGetter('cateChild')),
 		task = JSON.parse(Util.StorageGetter('task'));
+		console.log(DOM.icon_del);
 		main();
 	}
 	
