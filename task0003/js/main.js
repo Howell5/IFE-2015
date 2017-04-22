@@ -371,7 +371,7 @@
 					"name": nameInputValue,
 					"date": dateInputValue,
 					"content": contentInputValue,
-					"fatherId": ,
+					"fatherId": fatherid,
 					"finish": false
 
 				}
