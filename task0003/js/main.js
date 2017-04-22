@@ -141,7 +141,7 @@
 
 	function renderBase () {
 		var taskIdArr;
-		var cFlag;
+		var cFlag,aChoose;
 		// 获得 taskIdArr 方法
 		var getTaskIdArr = function (choose,flag) {
 			var taskIdArr = [];
@@ -222,6 +222,7 @@
 			statusHandle(1);
 			return (function (){
 				cFlag = flag;
+				aChoose = choose;
 			})();
 		}
 
@@ -345,10 +346,6 @@
 				alert('填写内容不得为空');
 				return;
 			} 
-			// else if (Util.getObjByKey(task, 'name', nameInputValue).length === 0) {
-			// 	alert('检测到有相同名称的任务已存在');
-			// 	return;
-			// } 
 			else if (!isDate(dateInputValue)) {
 				alert('日期填写错误');
 				return;
@@ -363,18 +360,34 @@
 
 			} else {  //二、保存新建任务的信息
 				cFlag;
-				var fatherid;
-				debugger;
+				aChoose;
+				var fatherid = (function(cflag, achoose) {
+					var fatherid;
+					var aCate;
+					var itemName = achoose.getElementsByTagName('span')[0].innerHTML;
+					if (cFlag === 1) { //当选中为所有任务时，添加新任务
+						fatherid = cateChild[0].id;
+					} else if (cFlag === 2) { //当选中为主分类时，添加新任务
+						aCate = Util.getObjByKey(cate, 'name', itemName)[0];
+						fatherid = aCate.childArr[0];
+					} else if (cflag === 3) { //当选中为次分类时，添加新任务
+						aCate = Util.getObjByKey(cateChild, 'name', itemName)[0];
+						fatherid = aCate.id;
+					}
+					return fatherid;
+				})(cFlag, aChoose);
 				var newTask = {
-
 					"id": task.length,
 					"name": nameInputValue,
 					"date": dateInputValue,
 					"content": contentInputValue,
 					"fatherId": fatherid,
 					"finish": false
-
 				}
+				task.push(newTask);
+				var fatherObj = Util.getObjByKey(cateChild, 'id', newTask.fatherId)[0];
+				
+				fatherObj.childArr.push(newTask.id);
 
 			}
 			saveData();
@@ -394,6 +407,7 @@
 			
 		}
 
+		//将任务标记为完成
 		var taskFinish = function () {
 			var activeTask = Util.getObjByKey(task, 'name', demit.innerText)[0];
 			if (activeTask.finish) {
@@ -442,6 +456,10 @@
 			makeType();
 			makeTask(DOM.all_type.firstElementChild, 1);
 			makeTaskDetail(DOM.task_message.getElementsByTagName('li')[0]);
+			//回收因闭包而未销毁的变量
+			demit = null;
+			cFlag = null;
+			aChoose = null;
 		}
 
 		return {
