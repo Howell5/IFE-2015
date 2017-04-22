@@ -33,7 +33,7 @@ function winLoad() {
         if (value === "") {
             adviceUl.style.display = "none";
         } else {
-            ajax("task0002_4.txt", {
+            ajax("./task0002_4.txt", {
                 onsuccess: prompt
             });
         }
@@ -55,15 +55,15 @@ function winLoad() {
     }
 
     function clickLi() {
-        delegateEvent(adviceUl, "li", "mouseover", function() {
+        delegateEvent(adviceUl, "li", "mouseover", function(ali) {
             removeLiClass();
-            addClass(this, "active");
+            addClass(ali, "active");
         });
-        delegateEvent(adviceUl, "li", "mouseout", function() {
-            removeClass(this, "active");
+        delegateEvent(adviceUl, "li", "mouseout", function(ali) {
+            removeClass(ali, "active");
         });
-        delegateEvent(adviceUl, "li", "click", function() {
-            eInput.value = delegateSpan(this.innerHTML);
+        delegateEvent(adviceUl, "li", "click", function(ali) {
+            eInput.value = delegateSpan(ali.innerHTML);
             adviceUl.style.display = "none";
         });
     }

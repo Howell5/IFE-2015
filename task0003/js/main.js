@@ -377,8 +377,6 @@
 				}
 
 			}
-			
-
 			saveData();
 			init();
 

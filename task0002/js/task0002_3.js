@@ -134,10 +134,10 @@ function slideShow(element, option) {
 
 	//点击播放
 	function clickLi() {
-		delegateEvent(createUl, "li", "click", function(){
-			var iTarget = -iCurrent * getIndex(this);
+		delegateEvent(createUl, "li", "click", function(ali){
+			var iTarget = -iCurrent * getIndex(ali);
 			removeLiClass();
-			addClass(this, "active");
+			addClass(ali, "active");
 			startMove(element, {
 				left : iTarget
 			});
