@@ -43,7 +43,7 @@
 		btn_quit: $('.bottom-area .btn-quit'),
 		icon_check: $('.check-edit .icon-check'),
 		icon_edit: $('.check-edit .icon-edit'),
-		icon_del: $('.icon-remove'),
+		icon_del: $('.list-name'),
 		bottom_button: $('.bottom-area .bottom-button'),
 		check_edit: $('.task-title .check-edit'),
 		todo_name: $('.task-title .todo-name'),
@@ -600,12 +600,7 @@
 			selClick: selClick,
 			cateClick: cateClick
 		}
-
-
-
 	}
-
-	//保存数据
 		
 
 	function main () {
@@ -676,7 +671,7 @@
 		Util.StorageSetter('cate', JSON.stringify(cate));
 		Util.StorageSetter('cateChild', JSON.stringify(cateChild));
 		Util.StorageSetter('task', JSON.stringify(task));
-	}	
+	}
 
 
 	Win.onload = function () {
@@ -688,7 +683,8 @@
 		cate = JSON.parse(Util.StorageGetter('cate')),
 		cateChild = JSON.parse(Util.StorageGetter('cateChild')),
 		task = JSON.parse(Util.StorageGetter('task'));
-		console.log(DOM.icon_del);
+		var icon_del = document.getElementsByClassName('icon-file')[0];
+		console.log(icon_del,DOM.icon_del);
 		main();
 	}
 	
