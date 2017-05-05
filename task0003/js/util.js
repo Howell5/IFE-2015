@@ -362,7 +362,7 @@ function clickHandle(ev) {
 
 function delegateEvent(element, tag, eventName, listener) {
     return addEvent(element, eventName, function(ev) {
-        if (ev.target.tagName.toLocaleLowerCase() === tag) {
+        if (ev.target.tagName.toLocaleLowerCase() === tag || ev.target.className === tag) {
             listener(ev.target);
         }
     })

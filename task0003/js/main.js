@@ -43,7 +43,6 @@
 		btn_quit: $('.bottom-area .btn-quit'),
 		icon_check: $('.check-edit .icon-check'),
 		icon_edit: $('.check-edit .icon-edit'),
-		icon_del: $('.list-name'),
 		bottom_button: $('.bottom-area .bottom-button'),
 		check_edit: $('.task-title .check-edit'),
 		todo_name: $('.task-title .todo-name'),
@@ -52,6 +51,8 @@
 		task_menu: $('.task-menu'),
 		selBtn_lists: $('.task-menu').getElementsByTagName('li'),
 		task_message: $('.task-message'),
+		content_left_1: $('#content-left-1'),
+		content_left_2: $('#content-left-2'),
 		all_type: $('.all-type'),
 		all_item: $('.all-type').firstElementChild,
 		task_list: $('.task-list'),
@@ -185,16 +186,22 @@
 						+	'<li class="list-name">'
 						+	'<i class="icon-folder-open"></i>'
 						+	'<span>'+cate[i].name+'</span>'
-						+	'<span>('+cate[i].num+')</span>'
-						+		'<i class="icon-remove"></i>'
-						+	'</li>'
-						+	'<ul>';
+						+	'<span>('+cate[i].num+')</span>';
+
+						if (i !== 0) {
+							html += '<i class="icon-remove"></i>';
+						}
+								
+						html +=	'</li><ul>';
 				if (i < len - 1) {
 					optionHtml += '<option value="'+ cate[i+1].id +'">' + cate[i+1].name + '</option>';
 				}
 				for (var j = 0; j < cate[i].childArr.length; j++) {
 					var cateChildId = cate[i].childArr[j];
-					html += '<li class="child-name"><i class="icon-file"></i><span>'+cateChild[cateChildId].name+'</span><span>('+ cateChild[cateChildId].childArr.length +')</span><i class="icon-remove"></i></li>'
+					html += '<li class="child-name"><i class="icon-file"></i><span>'+cateChild[cateChildId].name+'</span><span>('+ cateChild[cateChildId].childArr.length +')</span>';
+					if (i !== 0 || j !== 0) {
+						html += '<i class="icon-remove"></i></li>';
+					}
 				}
 				html += '</ul></div>';
 			}
@@ -460,6 +467,13 @@
 		}
 		//删除分类或任务
 		var Deleter = function (ele) {
+			var con = confirm("删除操作不可逆，确定删除吗？");
+			if (!con) {
+				return;
+			}
+
+			var parentEle = ele.parentElement;
+
 			debugger;
 		}
 
@@ -472,7 +486,7 @@
 			cFlag = null;
 			aChoose = null;
 		}
-
+		init();
 		return {
 			init: init,
 			Deleter: Deleter,
@@ -489,6 +503,7 @@
 	}
 
 	function EventHandle () {
+		var icon_del = document.getElementsByClassName('icon-remove')[0];
 
 		var firstSelBtn = DOM.task_menu.firstElementChild;
 		//分类列表点击
@@ -581,9 +596,14 @@
 		}
 		//点击删除按钮
 		var DeleteClick = function (callback) {
-			addClickEvent(DOM.icon_del, function (ele) {
+			//代理删除分类的按钮
+			delegateEvent(DOM.content_left_1, 'icon-remove', 'click', function(ele) {
 				callback && callback(ele);
-			})
+			});
+			//代理删除任务的按钮
+			delegateEvent(DOM.content_left_2, 'icon-remove', 'click', function(ele) {
+				callback && callback(ele);
+			});
 		}
 
 		return {
@@ -608,7 +628,6 @@
 		var renderModel = renderBase();
 		var eventHandle = EventHandle();
 		var flag;
-		renderModel.init();
 		eventHandle.cateClick(function(name) {
 			if (name.className.indexOf('all-items') !==-1) {
 				//选中所有任务
@@ -664,7 +683,7 @@
 		});
 		eventHandle.DeleteClick(function (ele) {
 			renderModel.Deleter(ele);
-		})
+		});
 	}
 
 	function saveData () {
@@ -683,8 +702,7 @@
 		cate = JSON.parse(Util.StorageGetter('cate')),
 		cateChild = JSON.parse(Util.StorageGetter('cateChild')),
 		task = JSON.parse(Util.StorageGetter('task'));
-		var icon_del = document.getElementsByClassName('icon-file')[0];
-		console.log(icon_del,DOM.icon_del);
+		
 		main();
 	}
 	
