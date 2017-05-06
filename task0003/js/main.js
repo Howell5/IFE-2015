@@ -183,7 +183,7 @@
 			DOM.all_type.innerHTML = '<li class="all-items choose"><span>所有任务('+ task.length +')</span></li>'
 			for (var i = 0, len = cate.length; i < len; i++) {
 				html += '<div class="item-list">'
-						+	'<li class="list-name">'
+						+	'<li class="list-name" data-type="main-list" data-id="'+i+'">'
 						+	'<i class="icon-folder-open"></i>'
 						+	'<span>'+cate[i].name+'</span>'
 						+	'<span>('+cate[i].num+')</span>';
@@ -198,7 +198,7 @@
 				}
 				for (var j = 0; j < cate[i].childArr.length; j++) {
 					var cateChildId = cate[i].childArr[j];
-					html += '<li class="child-name"><i class="icon-file"></i><span>'+cateChild[cateChildId].name+'</span><span>('+ cateChild[cateChildId].childArr.length +')</span>';
+					html += '<li class="child-name"  data-type="child-list" data-id="'+j+'"><i class="icon-file"></i><span>'+cateChild[cateChildId].name+'</span><span>('+ cateChild[cateChildId].childArr.length +')</span>';
 					if (i !== 0 || j !== 0) {
 						html += '<i class="icon-remove"></i></li>';
 					}
@@ -281,15 +281,15 @@
 				var taskObjSameDate = Util.getObjByKey(task, 'date', date[i]); //获取拥有相同日期的task
 
 				for (var j = 0; j < taskObjSameDate.length; j++) {
-					isFinished(taskObjSameDate[j]);
+					isFinished(taskObjSameDate[j], j);
 				}
 			}
 
-			function isFinished (obj) {
+			function isFinished (obj, num) {
 				if (obj.finish) {
-					mesHtml += '<li><i class="icon-ok"></i>'+obj.name+'<i class="icon-remove"></i></li>';
+					mesHtml += '<li data-type="task-list" data-id="'+num+'"><i class="icon-ok"></i>'+obj.name+'<i class="icon-remove"></i></li>';
 				} else {
-					mesHtml += '<li>'+obj.name+'<i class="icon-remove"></i></li>';
+					mesHtml += '<li data-type="task-list" data-id="'+num+'">'+obj.name+'<i class="icon-remove"></i></li>';
 				}
 			}
 			mesHtml += '</ul>';
@@ -473,7 +473,22 @@
 			}
 
 			var parentEle = ele.parentElement;
+			var eleType = parentEle.dataset.type;
+			switch(eleType) {
+				//删除主分类
+				case 'main-list':
 
+					break;
+				//删除子分类
+				case 'child-list':
+					break;
+				//删除任务
+				case 'task-list':
+					break;
+				default:
+					throw new Error ("the data-type is wrong!");
+					break;
+			}
 			debugger;
 		}
 
