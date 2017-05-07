@@ -14,7 +14,7 @@
 		var Jsonps = function (key) {
 			return JSON.parse(JSON.stringify(key));
 		};
-		var getObjByKey = function(obj, key, val) {
+		var getObjByKey = function (obj, key, val) {
 			var objArr = [];
 			for (var i = 0; i < obj.length; i++) {
 				if (obj[i][key] === val) {
@@ -22,10 +22,18 @@
 				}
 			}
 			return objArr;
+		};
+		var getIndexByKey = function (obj, key, val) {
+			for (var i = 0; i < obj.length; i++) {
+				if (obj[i][key] === val) {
+					return i;
+				}
+			}
 		}
 		return {
 			Jsonps: Jsonps,
 			getObjByKey: getObjByKey,
+			getIndexByKey: getIndexByKey,
 			StorageGetter: StorageGetter,
 			StorageSetter: StorageSetter
 		}
@@ -197,8 +205,8 @@
 					optionHtml += '<option value="'+ cate[i+1].id +'">' + cate[i+1].name + '</option>';
 				}
 				for (var j = 0; j < cate[i].childArr.length; j++) {
-					var cateChildId = cate[i].childArr[j];
-					html += '<li class="child-name"  data-type="child-list" data-id="'+j+'"><i class="icon-file"></i><span>'+cateChild[cateChildId].name+'</span><span>('+ cateChild[cateChildId].childArr.length +')</span>';
+					var cateChildId = Util.getIndexByKey(cateChild, 'id', cate[i].childArr[j]);
+					html += '<li class="child-name"  data-type="child-list" data-id="'+cateChildId+'"><i class="icon-file"></i><span>'+cateChild[cateChildId].name+'</span><span>('+ cateChild[cateChildId].childArr.length +')</span>';
 					if (i !== 0 || j !== 0) {
 						html += '<i class="icon-remove"></i></li>';
 					}
@@ -215,7 +223,7 @@
 				for (var i = 0; i < cate.length; i++) {
 					num = 0;
 					for (var j = 0; j < cate[i].childArr.length; j++) {
-						var cateChildId = cate[i].childArr[j];
+						var cateChildId = Util.getIndexByKey(cateChild, 'id', cate[i].childArr[j]);
 						num += cateChild[cateChildId].childArr.length;
 					}
 					cate[i].num = num;
@@ -281,15 +289,15 @@
 				var taskObjSameDate = Util.getObjByKey(task, 'date', date[i]); //获取拥有相同日期的task
 
 				for (var j = 0; j < taskObjSameDate.length; j++) {
-					isFinished(taskObjSameDate[j], j);
+					isFinished(taskObjSameDate[j]);
 				}
 			}
 
-			function isFinished (obj, num) {
+			function isFinished (obj) {
 				if (obj.finish) {
-					mesHtml += '<li data-type="task-list" data-id="'+num+'"><i class="icon-ok"></i>'+obj.name+'<i class="icon-remove"></i></li>';
+					mesHtml += '<li data-type="task-list"><i class="icon-ok"></i>'+obj.name+'<i class="icon-remove"></i></li>';
 				} else {
-					mesHtml += '<li data-type="task-list" data-id="'+num+'">'+obj.name+'<i class="icon-remove"></i></li>';
+					mesHtml += '<li data-type="task-list">'+obj.name+'<i class="icon-remove"></i></li>';
 				}
 			}
 			mesHtml += '</ul>';
@@ -472,24 +480,52 @@
 				return;
 			}
 
-			var parentEle = ele.parentElement;
-			var eleType = parentEle.dataset.type;
+			var parentEle = ele.parentElement,
+				eleType = parentEle.dataset.type;
+				
+
 			switch(eleType) {
 				//删除主分类
 				case 'main-list':
-
+					var eleId = parseInt(parentEle.dataset.id),
+						curCate = Util.getObjByKey(cate, 'id', eleId)[0],
+						index = Util.getIndexByKey(cate, 'id', eleId);
+					for (var i = 0, len = curCate.childArr.length; i < len; i++) {
+						var curCateChild = Util.getObjByKey(cateChild, 'id', curCate.childArr[i])[0],
+							childIndex = Util.getIndexByKey(cateChild, 'id', curCate.childArr[i]);
+						
+						for (var j = 0, clen = curCateChild.childArr.length; j < clen; j++) {
+							var taskIndex = Util.getIndexByKey(task, 'id', curCateChild.childArr[j]);
+							task.splice(taskIndex, 1);
+						}
+						cateChild.splice(childIndex, 1);
+					}
+					cate.splice(index, 1);
 					break;
 				//删除子分类
 				case 'child-list':
+					var eleId = parseInt(parentEle.dataset.id),
+						curCateChild = Util.getObjByKey(cateChild, 'id', eleId)[0];
+					for (var i = 0, len = curCateChild.childArr.length; i < len; i++) {
+						var taskIndex = Util.getIndexByKey(task, 'id', curCateChild.childArr[i]);
+						task.splice(taskIndex, 1);
+					}
+					var fatherObj = Util.getObjByKey(cate, 'id', parseInt(curCateChild.fatherId))[0];
+					//debugger;
+					fatherObj.childArr.splice(fatherObj.childArr.indexOf(eleId), 1);
+					cateChild.splice(eleId, 1);
 					break;
 				//删除任务
 				case 'task-list':
 					break;
 				default:
-					throw new Error ("the data-type is wrong!");
+					throw new Error ("the HTML data-type is wrong!");
 					break;
 			}
-			debugger;
+			//debugger;
+			
+			init();
+			
 		}
 
 		var init = function () {
