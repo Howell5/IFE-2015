@@ -150,8 +150,10 @@
 		nonnum;
 
 	function renderBase () {
-		var taskIdArr;
-		var cFlag,aChoose;
+		var cFlag,
+			demit,
+			aChoose,
+			taskIdArr;
 		// 获得 taskIdArr 方法
 		var getTaskIdArr = function (choose,flag) {
 			var taskIdArr = [];
@@ -308,9 +310,10 @@
 					return a.replace(/-/g, '') - b.replace(/-/g, '');
 				});
 			};
-			
+			makeTaskDetail(DOM.task_message.getElementsByTagName('li')[0]);
 		}
-		var demit;
+		
+
 		//渲染任务详细信息
 		var makeTaskDetail = function (taskli) {
 			var taskName = taskli.innerText;
@@ -414,7 +417,7 @@
 			saveData();
 			makeTask(aChoose, cFlag);
 			makeTaskDetail(DOM.task_message.getElementsByTagName('li')[0]);
-
+			init();
 			hide(DOM.bottom_button);
 			show(DOM.check_edit);
 			
@@ -473,6 +476,7 @@
 			hide(DOM.coverWrap);
 			listValue = '';
 		}
+
 		//删除分类或任务
 		var Deleter = function (ele) {
 			var con = confirm("删除操作不可逆，确定删除吗？");
@@ -511,19 +515,27 @@
 						task.splice(taskIndex, 1);
 					}
 					var fatherObj = Util.getObjByKey(cate, 'id', parseInt(curCateChild.fatherId))[0];
-					//debugger;
+					
 					fatherObj.childArr.splice(fatherObj.childArr.indexOf(eleId), 1);
 					cateChild.splice(eleId, 1);
 					break;
 				//删除任务
 				case 'task-list':
+					var eleInnerHTML = ele.parentElement.innerText,
+						curTask = Util.getObjByKey(task, 'name', eleInnerHTML)[0],
+						fatherObj = Util.getObjByKey(cateChild, 'id', curTask.fatherId)[0],
+						taskIndex = Util.getIndexByKey(task, 'id', curTask.id);
+					fatherObj.childArr.splice(fatherObj.childArr.indexOf(curTask.id), 1);
+					task.splice(taskIndex, 1);
+						
+
 					break;
 				default:
 					throw new Error ("the HTML data-type is wrong!");
 					break;
 			}
 			//debugger;
-			
+			saveData();
 			init();
 			
 		}
