@@ -310,7 +310,10 @@
 					return a.replace(/-/g, '') - b.replace(/-/g, '');
 				});
 			};
-			makeTaskDetail(DOM.task_message.getElementsByTagName('li')[0]);
+			var firstLi = DOM.task_message.getElementsByTagName('li')[0];
+			if (firstLi) {
+				makeTaskDetail(firstLi);
+			}
 		}
 		
 
