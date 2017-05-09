@@ -311,14 +311,7 @@
 				});
 			};
 			var firstLi = DOM.task_message.getElementsByTagName('li')[0];
-<<<<<<< HEAD
 			firstLi && makeTaskDetail(firstLi);
-			
-=======
-			if (firstLi) {
-				makeTaskDetail(firstLi);
-			}
->>>>>>> 488473fa2a4fa707d90ef00110a1de847703f9f7
 		}
 		
 
