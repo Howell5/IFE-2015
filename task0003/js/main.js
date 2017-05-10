@@ -2,7 +2,7 @@
 (function (){
 'use strict';
 
-	//封装常用方法
+	// 封装常用基础方法
 	var Util = (function () {
 		var prex = 'TASK_MANAGER_';
 		var StorageGetter = function (key) {
@@ -39,6 +39,7 @@
 		}
 	})();
 
+	// DOM元素对象
 	var DOM = {
 		list_val: $('.list-val'),
 		list_sel: $('.list-sel'),
@@ -73,8 +74,8 @@
 		cateChild,
 		task;
 
-//  使用localStorage + JSON存储任务数据
-//  其中cate 表示主分类列表，cateChild 表示子分类列表，task 表示任务详细数据
+	//  使用localStorage + JSON存储任务数据
+	//  其中cate 表示主分类列表，cateChild 表示子分类列表，task 表示任务详细数据
 	var cateText = [
 		{
 			"id": 0,
@@ -149,12 +150,22 @@
 		optionHtml = '',
 		nonnum;
 
+	/**
+	 * [renderBase 基础渲染相关操作]
+	 * @return {[type]} [各渲染操作方法]
+	 */
 	function renderBase () {
 		var cFlag,
 			demit,
 			aChoose,
 			taskIdArr;
-		// 获得 taskIdArr 方法
+
+		/**
+		 * [getTaskIdArr 获得 taskIdArr]
+		 * @param  {[ele]} choose [选中的具体分类元素]
+		 * @param  {[number]} flag   [选中的元素类型判断]
+		 * @return {[Array]}        [任务id数组]
+		 */
 		var getTaskIdArr = function (choose,flag) {
 			var taskIdArr = [];
 			var itemName = choose.getElementsByTagName('span')[0].innerHTML;
@@ -185,7 +196,9 @@
 			};
 		}
 
-		// 渲染任务分类列表
+		/**
+		 * [makeType 渲染任务分类列表]
+		 */
 		var makeType = function () {
 			html = '';
 			setNum();
@@ -233,8 +246,13 @@
 			}
 		}
 
-		//生成任务二层信息列表
-		var makeTask = function (choose,flag) {
+		/**
+		 * [makeTask 生成任务二层信息列表]
+		 * @param  {[type]} choose [选中的task]
+		 * @param  {[type]} flag   [判断flag]
+		 * @return {[type]}        [返回闭包, cFlag和aChoose后面都会用到]
+		 */
+		var makeTask = function (choose, flag) {
 			taskIdArr = getTaskIdArr(choose,flag);
 			makeTaskById(taskIdArr);
 			statusHandle(1);
@@ -274,7 +292,10 @@
 			
 		}
 
-		// 渲染二层任务信息列表
+		/**
+		 * [makeTaskById 渲染二层任务信息列表]
+		 * @param  {[type]} taskIdArr [计算到的任务id数组]
+		 */
 		var makeTaskById = function (taskIdArr) {
 			var date = [];
 			var taskDate;
@@ -315,7 +336,12 @@
 		}
 		
 
-		//渲染任务详细信息
+		
+		/**
+		 * [makeTaskDetail 渲染任务详细信息]
+		 * @param  {[ele]} taskli [具体的某个task元素]
+		 * @return {[cloure]}        [返回一个闭包，因为里面的taskli还会用到]
+		 */
 		var makeTaskDetail = function (taskli) {
 			var taskName = taskli.innerText;
 			var taskObj = Util.getObjByKey(task, 'name', taskName)[0];
@@ -330,7 +356,10 @@
 			})();
 		}
 
-		//页面内容修改编辑模式
+		
+		/**
+		 * [taskEdit 页面内容修改编辑模式]
+		 */
 		var taskEdit = function () {
 			hide(DOM.check_edit);
 			show(DOM.bottom_button);
@@ -343,7 +372,9 @@
 				
 		}
 
-		//页面新内容编辑模式
+		/**
+		 * [newTaskEdit 页面新内容编辑模式]
+		 */
 		var newTaskEdit = function () {
 			demit = undefined;
 			hide(DOM.check_edit);
@@ -356,7 +387,11 @@
 		}
 
 
-		//保存页面编辑内容
+		/**
+		 * [taskSave 保存页面编辑内容]
+		 * @param  {[type]} cTask [description]
+		 * @return {[type]}       [放弃保存则返回空]
+		 */
 		var taskSave = function (cTask) {
 			var nameInputValue = DOM.todo_name.firstElementChild.value,
 				dateInputValue = DOM.todo_date.firstElementChild.value,
@@ -423,7 +458,10 @@
 			show(DOM.check_edit);
 			
 		}
-		//还原修改前的数据
+
+		/**
+		 * [taskQuit 还原修改前的数据]
+		 */
 		var taskQuit = function () {
 			if (demit) {
 				makeTaskDetail(demit);
@@ -433,7 +471,9 @@
 			
 		}
 
-		//将任务标记为完成
+		/**
+		 * [taskFinish 将任务标记为完成]
+		 */
 		var taskFinish = function () {
 			var activeTask = Util.getObjByKey(task, 'name', demit.innerText)[0];
 			if (activeTask.finish) {
@@ -445,7 +485,9 @@
 			init();
 		}
 		
-		//新增主分类
+		/**
+		 * [addList 新增主分类]
+		 */
 		var addList = function () {
 			var selValue = DOM.list_sel;
 			var index = selValue.value;
@@ -478,7 +520,10 @@
 			listValue = '';
 		}
 
-		//删除分类或任务
+		/**
+		 * [Deleter 删除分类或任务]
+		 * @param {[ele]} ele [删除的某个DOM元素]
+		 */
 		var Deleter = function (ele) {
 			var con = confirm("删除操作不可逆，确定删除吗？");
 			if (!con) {
@@ -528,19 +573,19 @@
 						taskIndex = Util.getIndexByKey(task, 'id', curTask.id);
 					fatherObj.childArr.splice(fatherObj.childArr.indexOf(curTask.id), 1);
 					task.splice(taskIndex, 1);
-						
-
 					break;
 				default:
 					throw new Error ("the HTML data-type is wrong!");
 					break;
 			}
-			//debugger;
 			saveData();
 			init();
 			
 		}
 
+		/**
+		 * [init 初始化函数，整合渲染操作]
+		 */
 		var init = function () {
 			makeType();
 			makeTask(DOM.all_type.firstElementChild, 1);
@@ -566,6 +611,9 @@
 		}
 	}
 
+	/**
+	 * [EventHandle 事件处理相关函数]
+	 */
 	function EventHandle () {
 		var icon_del = document.getElementsByClassName('icon-remove')[0];
 
@@ -686,9 +734,10 @@
 		}
 	}
 		
-
+	/**
+	 * [main 执行入口]
+	 */
 	function main () {
-		// TODO: 执行入口
 		var renderModel = renderBase();
 		var eventHandle = EventHandle();
 		var flag;
@@ -750,25 +799,30 @@
 		});
 	}
 
+	/**
+	 * [saveData 将数据写入localStorage中]
+	 */
 	function saveData () {
 		Util.StorageSetter('cate', JSON.stringify(cate));
 		Util.StorageSetter('cateChild', JSON.stringify(cateChild));
 		Util.StorageSetter('task', JSON.stringify(task));
 	}
 
-
+	/**
+	 * [onload 加载函数]
+	 */
 	Win.onload = function () {
+		// 若用户是第一次进入页面，则将默认数据写入localStorage中
 		if (!Util.StorageGetter('cate')) {
 			Util.StorageSetter('cate', JSON.stringify(cateText));
 			Util.StorageSetter('cateChild', JSON.stringify(cateChildText));
 			Util.StorageSetter('task', JSON.stringify(taskText));
 		}
+		// 若不是第一次操作, 则从localStorage中读取数据
 		cate = JSON.parse(Util.StorageGetter('cate')),
 		cateChild = JSON.parse(Util.StorageGetter('cateChild')),
 		task = JSON.parse(Util.StorageGetter('task'));
-		
 		main();
 	}
-	
 	
 })();
