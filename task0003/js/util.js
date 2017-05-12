@@ -4,8 +4,6 @@ var arr = new Array();
 isArray(arr);
 
 function isArray(arr) {
-    // outputlog(Array.isArray(arr));//Array的自身检测函数 IE9+、Fir
-    // output(arr.constructor == Array); */
     output(Object.prototype.toString.call(arr) == "[object Array]"); //
 }
 
@@ -74,17 +72,6 @@ function uniqArray(arr) {
     return narr;
 }
 
-/* 4-1.特殊数组排序
- * spa 为特殊字符，若无为''
- */ 
-/*function sortDate(arr, spa) {
-    spa = (spa === undefined) ? '': spa;
-    var regx = '/' + spa +'/g';
-    return arr.sort(function(a, b) {
-        return a.replace(regx, '') - b.replace(regx, '');
-    });
-}*/
-
 var a = [1, 3, 5, 7, 5, 3];
 var b = uniqArray(a);
 output(b);
@@ -100,7 +87,7 @@ function simpleTrim(str) {
 
 
 function trim(str) {
-    str = str.replace(/^\s+|\s+$/g, ""); //用一行正则达到效果	
+    str = str.replace(/^\s+|\s+$/g, ""); //用一行正则达到效果
     return str;
 }
 //在ES5中。字符串本身定义了trim方法（删除前置及后缀的空白字符）
@@ -191,12 +178,12 @@ function isMobilePhone(phone) {
 function isDate (d) {
     var reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/;
     var result = d.match(reg);
-    
+
     if(result == null){return false};
 
     var dt = new Date(result[1],result[3]-1,result[4]);
-    if(Number(dt.getFullYear())!=Number(result[1])){return false;}    
-    if(Number(dt.getMonth())+1!=Number(result[3])){return false;}    
+    if(Number(dt.getFullYear())!=Number(result[1])){return false;}
+    if(Number(dt.getMonth())+1!=Number(result[3])){return false;}
     if(Number(dt.getDate())!=Number(result[4])){return false;}
 
     return true;
@@ -226,7 +213,7 @@ function addClass(element, newClassName) {
     // }
 }
 
-// 移除element中的样式oldClassName	
+// 移除element中的样式oldClassName
 function removeClass(element, oldClassName) {
     var aclass = element.getAttribute("class");
     if (aclass)
@@ -248,10 +235,6 @@ function getPosition(element) {
 }
 
 var div = document.getElementById("b1");
-// addClass(div,"a2");
-// output(div.className);
-// output(getPosition(div));	
-
 
 // 实现一个简单Query
 
@@ -306,10 +289,6 @@ function $(selector) {
     }
 
 }
-// output($("#b1 .bee").innerHTML);
-
-
-
 
 
 /* 10.为element绑定事件 */
@@ -322,7 +301,7 @@ function addEvent(element, event, listener) {
 // 移除element对象对于event事件发生时执行listener的响应
 function removeEvent(element, event, listener) {
     element.removeEventListener(event, listener, false);
-    
+
 }
 
 // 实现对click事件的绑定
@@ -375,7 +354,6 @@ $.delegate = function(selector, tag, event, listener) {
     // your implement
     return delegateEvent($(selector), tag, event, listener);
 }
-    // $.delegate("#list", "li", "click", clickHandle);
 
 /*BOM*/
 
@@ -444,7 +422,7 @@ function ajax(url, options) {
 }
 
 /*ajax(
-    'test.html', 
+    'test.html',
     {
         data: {
             name: 'simon',

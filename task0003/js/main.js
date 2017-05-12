@@ -18,7 +18,7 @@
 			var objArr = [];
 			for (var i = 0; i < obj.length; i++) {
 				if (obj[i][key] === val) {
-					objArr.push(obj[i]);	
+					objArr.push(obj[i]);
 				}
 			}
 			return objArr;
@@ -214,7 +214,7 @@
 						if (i !== 0) {
 							html += '<i class="icon-remove"></i>';
 						}
-								
+
 						html +=	'</li><ul>';
 				if (i < len - 1) {
 					optionHtml += '<option value="'+ cate[i+1].id +'">' + cate[i+1].name + '</option>';
@@ -289,7 +289,7 @@
 					makeTaskById(unfinishIdArr);
 					break;
 			}
-			
+
 		}
 
 		/**
@@ -324,7 +324,7 @@
 				}
 			}
 			mesHtml += '</ul>';
-				
+
 			DOM.task_message.innerHTML = mesHtml;
 			function sortDate (arr) {
 				return arr.sort(function (a, b) {
@@ -334,9 +334,9 @@
 			var firstLi = DOM.task_message.getElementsByTagName('li')[0];
 			firstLi && makeTaskDetail(firstLi);
 		}
-		
 
-		
+
+
 		/**
 		 * [makeTaskDetail 渲染任务详细信息]
 		 * @param  {[ele]} taskli [具体的某个task元素]
@@ -356,7 +356,7 @@
 			})();
 		}
 
-		
+
 		/**
 		 * [taskEdit 页面内容修改编辑模式]
 		 */
@@ -365,11 +365,11 @@
 			show(DOM.bottom_button);
 			var content = DOM.todo_content.innerText;
 			var contentHTML = '<textarea name="text-content" class="textarea-content">'+ content +'</textarea>';
-			
+
 			DOM.todo_content.innerHTML = contentHTML;
 			DOM.todo_date.innerHTML = '<input placeholder="例:2017-2-15" type="date" name="todo-date" >';
 			DOM.todo_name.innerHTML = '<input type="text" name="todo-name" value='+DOM.todo_name.innerText+'>';
-				
+
 		}
 
 		/**
@@ -379,11 +379,11 @@
 			demit = undefined;
 			hide(DOM.check_edit);
 			show(DOM.bottom_button);
-			
+
 			DOM.todo_content.innerHTML = '<textarea name="text-content" class="textarea-content"></textarea>';
 			DOM.todo_date.innerHTML = '<input placeholder="例:2017-2-15" type="date" name="todo-date" >';
 			DOM.todo_name.innerHTML = '<input type="text" name="todo-name" value="">';
-				
+
 		}
 
 
@@ -400,7 +400,7 @@
 			if(!nameInputValue || !dateInputValue || !contentInputValue) {
 				alert('填写内容不得为空');
 				return;
-			} 
+			}
 			else if (!isDate(dateInputValue)) {
 				alert('日期填写错误');
 				return;
@@ -446,7 +446,7 @@
 				}
 				task.push(newTask);
 				var fatherObj = Util.getObjByKey(cateChild, 'id', newTask.fatherId)[0];
-				
+
 				fatherObj.childArr.push(newTask.id);
 
 			}
@@ -456,7 +456,7 @@
 			init();
 			hide(DOM.bottom_button);
 			show(DOM.check_edit);
-			
+
 		}
 
 		/**
@@ -468,7 +468,7 @@
 			} else {
 				init();
 			}
-			
+
 		}
 
 		/**
@@ -484,7 +484,7 @@
 			saveData();
 			init();
 		}
-		
+
 		/**
 		 * [addList 新增主分类]
 		 */
@@ -532,7 +532,6 @@
 
 			var parentEle = ele.parentElement,
 				eleType = parentEle.dataset.type;
-				
 
 			switch(eleType) {
 				//删除主分类
@@ -543,7 +542,7 @@
 					for (var i = 0, len = curCate.childArr.length; i < len; i++) {
 						var curCateChild = Util.getObjByKey(cateChild, 'id', curCate.childArr[i])[0],
 							childIndex = Util.getIndexByKey(cateChild, 'id', curCate.childArr[i]);
-						
+
 						for (var j = 0, clen = curCateChild.childArr.length; j < clen; j++) {
 							var taskIndex = Util.getIndexByKey(task, 'id', curCateChild.childArr[j]);
 							task.splice(taskIndex, 1);
@@ -561,7 +560,7 @@
 						task.splice(taskIndex, 1);
 					}
 					var fatherObj = Util.getObjByKey(cate, 'id', parseInt(curCateChild.fatherId))[0];
-					
+
 					fatherObj.childArr.splice(fatherObj.childArr.indexOf(eleId), 1);
 					cateChild.splice(eleId, 1);
 					break;
@@ -580,7 +579,7 @@
 			}
 			saveData();
 			init();
-			
+
 		}
 
 		/**
@@ -631,7 +630,7 @@
 				addClass(name, 'choose');
 				addClass(firstSelBtn, 'choose');
 				callback && callback(name);
-				
+
 			});
 		}
 
@@ -733,7 +732,7 @@
 			cateClick: cateClick
 		}
 	}
-		
+
 	/**
 	 * [main 执行入口]
 	 */
@@ -824,5 +823,5 @@
 		task = JSON.parse(Util.StorageGetter('task'));
 		main();
 	}
-	
+
 })();
