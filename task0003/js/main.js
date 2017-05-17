@@ -112,7 +112,7 @@
 		{
 			"id": 0,
 			"name": "sad-0",
-			"date": "2017-3-15",
+			"date": "2017-03-15",
 			"content": "这是默认的第一个任务",
 			"fatherId": 0,
 			"finish": true
@@ -120,7 +120,7 @@
 		{
 			"id": 1,
 			"name": "sad-1",
-			"date": "2017-3-17",
+			"date": "2017-03-17",
 			"content": "熟悉html,css",
 			"fatherId": 1,
 			"finish": true
@@ -129,7 +129,7 @@
 		{
 			"id": 2,
 			"name": "sad-2",
-			"date": "2017-3-17",
+			"date": "2017-03-17",
 			"content": "熟悉html5,css3,JavaScirpt",
 			"fatherId": 1,
 			"finish": true
@@ -137,7 +137,7 @@
 		{
 			"id": 3,
 			"name": "sad-3",
-			"date": "2017-3-18",
+			"date": "2017-03-18",
 			"content": "熟悉Vue.js框架,Node.JS服务器",
 			"fatherId": 2,
 			"finish": false
@@ -451,8 +451,10 @@
 
 			}
 			saveData();
-			makeTask(aChoose, cFlag);
-			makeTaskDetail(DOM.task_message.getElementsByTagName('li')[0]);
+			if (DOM.task_message.getElementsByTagName('li')[0]) {
+				makeTaskDetail(DOM.task_message.getElementsByTagName('li')[0]);
+			}
+			
 			init();
 			hide(DOM.bottom_button);
 			show(DOM.check_edit);
@@ -479,7 +481,8 @@
 			if (activeTask.finish) {
 				alert('该任务已经是完成状态了');
 			} else {
-				activeTask.finish = true;
+				var conf = confirm('该操作不可逆，你确定要勾选为完成吗？');
+				if (conf) activeTask.finish = true;
 			}
 			saveData();
 			init();
