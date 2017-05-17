@@ -111,16 +111,16 @@
 	var taskText = [
 		{
 			"id": 0,
-			"name": "sad-0",
-			"date": "2017-03-15",
+			"name": "DEFAULT",
+			"date": "2016-03-15",
 			"content": "这是默认的第一个任务",
 			"fatherId": 0,
 			"finish": true
 		},
 		{
 			"id": 1,
-			"name": "sad-1",
-			"date": "2017-03-17",
+			"name": "STEP-1",
+			"date": "2016-04-17",
 			"content": "熟悉html,css",
 			"fatherId": 1,
 			"finish": true
@@ -128,15 +128,15 @@
 		},
 		{
 			"id": 2,
-			"name": "sad-2",
-			"date": "2017-03-17",
+			"name": "STEP-2",
+			"date": "2016-12-17",
 			"content": "熟悉html5,css3,JavaScirpt",
 			"fatherId": 1,
 			"finish": true
 		},
 		{
 			"id": 3,
-			"name": "sad-3",
+			"name": "STEP-3",
 			"date": "2017-03-18",
 			"content": "熟悉Vue.js框架,Node.JS服务器",
 			"fatherId": 2,
